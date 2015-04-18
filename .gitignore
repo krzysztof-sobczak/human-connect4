@@ -1,0 +1,7 @@
+﻿################################################################################
+# This .gitignore file was automatically created by Microsoft(R) Visual Studio.
+################################################################################
+
+/HumanConnect4/HumanConnect4.WindowsPhone/obj/Debug
+/HumanConnect4/HumanConnect4.Windows/obj/Debug
+/HumanConnect4/HumanConnect4.Windows/bin/Debug
