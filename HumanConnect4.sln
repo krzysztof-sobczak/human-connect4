@@ -11,6 +11,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "HumanConnect4.Windows", "Hu
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "HumanConnect4.WindowsPhone", "HumanConnect4\HumanConnect4.WindowsPhone\HumanConnect4.WindowsPhone.csproj", "{8F80B933-0B6F-434E-BDCD-77914DEDD031}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Connect4Tests", "Connect4Tests\Connect4Tests.csproj", "{0F8F0FFF-906F-4A9E-91DD-35B23D217A96}"
+EndProject
 Global
 	GlobalSection(SharedMSBuildProjectFiles) = preSolution
 		HumanConnect4\HumanConnect4.Shared\HumanConnect4.Shared.projitems*{8f80b933-0b6f-434e-bdcd-77914dedd031}*SharedItemsImports = 4
@@ -72,6 +74,16 @@ Global
 		{8F80B933-0B6F-434E-BDCD-77914DEDD031}.Release|x86.ActiveCfg = Release|x86
 		{8F80B933-0B6F-434E-BDCD-77914DEDD031}.Release|x86.Build.0 = Release|x86
 		{8F80B933-0B6F-434E-BDCD-77914DEDD031}.Release|x86.Deploy.0 = Release|x86
+		{0F8F0FFF-906F-4A9E-91DD-35B23D217A96}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{0F8F0FFF-906F-4A9E-91DD-35B23D217A96}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{0F8F0FFF-906F-4A9E-91DD-35B23D217A96}.Debug|ARM.ActiveCfg = Debug|Any CPU
+		{0F8F0FFF-906F-4A9E-91DD-35B23D217A96}.Debug|x64.ActiveCfg = Debug|Any CPU
+		{0F8F0FFF-906F-4A9E-91DD-35B23D217A96}.Debug|x86.ActiveCfg = Debug|Any CPU
+		{0F8F0FFF-906F-4A9E-91DD-35B23D217A96}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{0F8F0FFF-906F-4A9E-91DD-35B23D217A96}.Release|Any CPU.Build.0 = Release|Any CPU
+		{0F8F0FFF-906F-4A9E-91DD-35B23D217A96}.Release|ARM.ActiveCfg = Release|Any CPU
+		{0F8F0FFF-906F-4A9E-91DD-35B23D217A96}.Release|x64.ActiveCfg = Release|Any CPU
+		{0F8F0FFF-906F-4A9E-91DD-35B23D217A96}.Release|x86.ActiveCfg = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

@@ -15,12 +15,16 @@
     <Compile Include="$(MSBuildThisFileDirectory)App.xaml.cs">
       <DependentUpon>App.xaml</DependentUpon>
     </Compile>
+    <Compile Include="$(MSBuildThisFileDirectory)Connect4\AI.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Connect4\ExtendedContext.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)NeuralNetwork\Edge.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)NeuralNetwork\Layers\AbstractHiddenLayer.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)NeuralNetwork\Layers\ConvolutionLayer.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)NeuralNetwork\Layers\InputLayer.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)NeuralNetwork\Layers\Layer.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)NeuralNetwork\Layers\OutputLayer.cs" />
-    <Compile Include="$(MSBuildThisFileDirectory)NeuralNetwork\NeuralNetwork.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)NeuralNetwork\Network.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)NeuralNetwork\Neuron.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)NeuralNetwork\PassiveNeuron.cs" />
   </ItemGroup>
 </Project>

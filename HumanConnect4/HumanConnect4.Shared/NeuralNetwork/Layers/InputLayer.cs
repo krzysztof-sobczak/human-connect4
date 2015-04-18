@@ -2,9 +2,22 @@
 using System.Collections.Generic;
 using System.Text;
 
-namespace HumanConnect4
+namespace HumanConnect4.NeuralNetwork.Layers
 {
     class InputLayer
     {
+        private List<PassiveNeuron> neurons;
+
+        public List<PassiveNeuron> Neurons
+        {
+            get { return neurons; }
+            set { neurons = value; }
+        }
+
+        public InputLayer()
+        {
+            Neurons = new List<PassiveNeuron>();
+        }
+
     }
 }
