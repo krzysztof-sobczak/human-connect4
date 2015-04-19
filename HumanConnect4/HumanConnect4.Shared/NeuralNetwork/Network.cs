@@ -38,6 +38,16 @@ namespace HumanConnect4.NeuralNetwork
 
         public void feedForward(InputLayer inputLayer)
         {
+            if (inputLayer.Neurons.Count != InputLayer.Neurons.Count)
+            {
+                throw new Exception(String.Format("Provided input layer must match number of neurons with current network model: {0} neurons.", InputLayer.Neurons.Count));
+            }
+
+            for(int i = 0; i < inputLayer.Neurons.Count; i ++)
+            {
+                InputLayer.Neurons[i].Output = inputLayer.Neurons[i].Output;
+            }
+
             foreach(AbstractHiddenLayer hiddenLayer in HiddenLayers)
             {
                 foreach(Neuron neuron in hiddenLayer.getNeurons())
