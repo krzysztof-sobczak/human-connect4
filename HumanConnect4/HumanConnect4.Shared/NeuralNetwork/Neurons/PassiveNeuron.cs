@@ -2,9 +2,9 @@
 using System.Collections.Generic;
 using System.Text;
 
-namespace HumanConnect4.NeuralNetwork
+namespace HumanConnect4.NeuralNetwork.Neurons
 {
-    class PassiveNeuron
+    class PassiveNeuron : AbstractNeuron
     {
         private float output;
 

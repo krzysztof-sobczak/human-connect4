@@ -1,4 +1,5 @@
-﻿using System;
+﻿using HumanConnect4.NeuralNetwork.Neurons;
+using System;
 using System.Collections.Generic;
 using System.Text;
 

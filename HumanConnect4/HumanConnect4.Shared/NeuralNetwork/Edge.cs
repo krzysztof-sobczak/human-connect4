@@ -1,4 +1,5 @@
-﻿using System;
+﻿using HumanConnect4.NeuralNetwork.Neurons;
+using System;
 using System.Collections.Generic;
 using System.Text;
 
@@ -14,18 +15,30 @@ namespace HumanConnect4.NeuralNetwork
             set { weight = value; }
         }
 
-        private Neuron input;
+        private AbstractNeuron input;
 
-        public Neuron Input
+        public AbstractNeuron Input
         {
             get { return input; }
             set { input = value; }
         }
 
-        public Edge(float weight, Neuron input)
+        public Edge(float weight, AbstractNeuron input)
         {
             this.weight = weight;
             this.input = input;
+        }
+
+        public static void connectAllNeurons(List<Neuron> targetNeurons, List<AbstractNeuron> sourceNeurons)
+        {
+            Random random = new Random(100);
+            foreach(Neuron targetNeuron in targetNeurons)
+            {
+                foreach(AbstractNeuron sourceNeuron in sourceNeurons)
+                {
+                    targetNeuron.Edges.Add(new Edge((float)random.NextDouble(), sourceNeuron));
+                }
+            }
         }
     }
 }

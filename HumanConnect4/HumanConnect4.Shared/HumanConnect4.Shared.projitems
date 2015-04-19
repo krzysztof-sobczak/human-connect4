@@ -24,7 +24,8 @@
     <Compile Include="$(MSBuildThisFileDirectory)NeuralNetwork\Layers\Layer.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)NeuralNetwork\Layers\OutputLayer.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)NeuralNetwork\Network.cs" />
-    <Compile Include="$(MSBuildThisFileDirectory)NeuralNetwork\Neuron.cs" />
-    <Compile Include="$(MSBuildThisFileDirectory)NeuralNetwork\PassiveNeuron.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)NeuralNetwork\Neurons\AbstractNeuron.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)NeuralNetwork\Neurons\Neuron.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)NeuralNetwork\Neurons\PassiveNeuron.cs" />
   </ItemGroup>
 </Project>
