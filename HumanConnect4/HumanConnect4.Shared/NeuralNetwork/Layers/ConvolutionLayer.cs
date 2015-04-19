@@ -42,7 +42,6 @@ namespace HumanConnect4.NeuralNetwork.Layers
         public ConvolutionLayer(int numberOfSublayers, Layer sublayerPattern, ConvolutionLayer convolutionLayerToConnectWith)
         {
             this.Layers = new List<Layer>();
-            Random random = new Random(100);
             if (numberOfSublayers == convolutionLayerToConnectWith.Layers.Count)
             {
                 for (int i = 0; i < numberOfSublayers; i++)
@@ -51,7 +50,7 @@ namespace HumanConnect4.NeuralNetwork.Layers
                     foreach(Neuron neuron in layer.Neurons)
                     {
                         foreach(Neuron inputNeuron in convolutionLayerToConnectWith.Layers[i].Neurons) {
-                            Edge edge = new Edge((float)random.NextDouble(), inputNeuron);
+                            Edge edge = new Edge(Random.BipolarFloat(), inputNeuron);
                             neuron.Edges.Add(edge);
                         }
                     }
@@ -62,6 +61,16 @@ namespace HumanConnect4.NeuralNetwork.Layers
             {
                 throw new Exception("Connected convolution layers must have the same number of sublayers.");
             }
+        }
+
+        public override List<Neuron> getNeurons()
+        {
+            List<Neuron> neurons = new List<Neuron>();
+            foreach(Layer layer in Layers)
+            {
+                neurons.AddRange(layer.Neurons);
+            }
+            return neurons;
         }
     }
 }

@@ -6,16 +6,10 @@ namespace HumanConnect4.NeuralNetwork.Neurons
 {
     class PassiveNeuron : AbstractNeuron
     {
-        private float output;
-
-        public float Output
-        {
-            get { return output; }
-        }
 
         public PassiveNeuron(int output)
         {
-            this.output = output;
+            base.Output = output;
         }
 
     }

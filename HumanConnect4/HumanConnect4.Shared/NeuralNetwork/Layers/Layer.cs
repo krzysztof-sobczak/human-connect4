@@ -28,5 +28,6 @@ namespace HumanConnect4.NeuralNetwork.Layers
                 this.Neurons.Add(new Neuron());
             }
         }
+
     }
 }

@@ -17,6 +17,7 @@
     </Compile>
     <Compile Include="$(MSBuildThisFileDirectory)Connect4\AI.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Connect4\ExtendedContext.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)NeuralNetwork\ActivationFunction.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)NeuralNetwork\Edge.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)NeuralNetwork\Layers\AbstractHiddenLayer.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)NeuralNetwork\Layers\ConvolutionLayer.cs" />
@@ -27,5 +28,6 @@
     <Compile Include="$(MSBuildThisFileDirectory)NeuralNetwork\Neurons\AbstractNeuron.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)NeuralNetwork\Neurons\Neuron.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)NeuralNetwork\Neurons\PassiveNeuron.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Random.cs" />
   </ItemGroup>
 </Project>

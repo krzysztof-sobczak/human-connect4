@@ -1,4 +1,5 @@
 ﻿using HumanConnect4.NeuralNetwork.Layers;
+using HumanConnect4.NeuralNetwork.Neurons;
 using System;
 using System.Collections.Generic;
 using System.Text;
@@ -33,6 +34,22 @@ namespace HumanConnect4.NeuralNetwork
         public Network()
         {
             HiddenLayers = new List<AbstractHiddenLayer>();
+        }
+
+        public void feedForward(InputLayer inputLayer)
+        {
+            foreach(AbstractHiddenLayer hiddenLayer in HiddenLayers)
+            {
+                foreach(Neuron neuron in hiddenLayer.getNeurons())
+                {
+                    neuron.calculateOutput();
+                }
+            }
+
+            foreach (Neuron neuron in OutputLayer.Neurons)
+            {
+                neuron.calculateOutput();
+            }
         }
 
     }

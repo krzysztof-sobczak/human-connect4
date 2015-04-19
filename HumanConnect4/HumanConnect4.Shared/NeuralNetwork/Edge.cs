@@ -31,12 +31,11 @@ namespace HumanConnect4.NeuralNetwork
 
         public static void connectAllNeurons(List<Neuron> targetNeurons, List<AbstractNeuron> sourceNeurons)
         {
-            Random random = new Random(100);
             foreach(Neuron targetNeuron in targetNeurons)
             {
                 foreach(AbstractNeuron sourceNeuron in sourceNeurons)
                 {
-                    targetNeuron.Edges.Add(new Edge((float)random.NextDouble(), sourceNeuron));
+                    targetNeuron.Edges.Add(new Edge(Random.BipolarFloat(), sourceNeuron));
                 }
             }
         }

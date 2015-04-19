@@ -21,13 +21,7 @@ namespace HumanConnect4.NeuralNetwork.Neurons
             get { return delta; }
             set { delta = value; }
         }
-        private float output;
 
-        public float Output
-        {
-            get { return output; }
-            set { output = value; }
-        }
 
         private float error;
 
@@ -48,6 +42,16 @@ namespace HumanConnect4.NeuralNetwork.Neurons
         public Neuron()
         {
             this.Edges = new List<Edge>();
+        }
+
+        public void calculateOutput()
+        {
+            float output = 0;
+            foreach(Edge edge in Edges)
+            {
+                output += Bias + edge.Input.Output * edge.Weight;
+            }
+            this.Output = ActivationFunction.sigmoid(output);
         }
     }
 }
