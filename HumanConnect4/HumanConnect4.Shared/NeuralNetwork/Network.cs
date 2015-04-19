@@ -2,12 +2,17 @@
 using HumanConnect4.NeuralNetwork.Neurons;
 using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Text;
 
 namespace HumanConnect4.NeuralNetwork
 {
     class Network
     {
+        private const float LEARNING_RATE = 1;
+        private const float MOMENTUM = 0;
+        private const int TRAIN_ITERATIONS = 50;
+
         private InputLayer inputLayer;
 
         public InputLayer InputLayer
@@ -31,9 +36,47 @@ namespace HumanConnect4.NeuralNetwork
             set { outputLayer = value; }
         }
 
+        private List<float> globalError;
+
+        public List<float> GlobalError
+        {
+            get { return globalError; }
+            set { globalError = value; }
+        }
+
+
         public Network()
         {
             HiddenLayers = new List<AbstractHiddenLayer>();
+        }
+
+        public void train(List<InputLayer> inputLayers, List<OutputLayer> expectedOutputLayers)
+        {
+            GlobalError = new List<float>();
+            if (inputLayers.Count != expectedOutputLayers.Count)
+            {
+                throw new Exception("Training set must contain the same number of elements inputLayers and expectedOutputPayers .");
+            }
+            for(int i = 0; i < TRAIN_ITERATIONS; i++)
+            {
+                float errorSum = 0;
+                int trainInstancesCount = inputLayers.Count;
+                for(int k = 0; k < trainInstancesCount; k++)
+                {
+                    learn(inputLayers[k],expectedOutputLayers[k]);
+                    errorSum += meanSquaredError();
+                }
+                float globalError = errorSum / trainInstancesCount;
+                GlobalError.Add(globalError);
+                Debug.WriteLine(String.Format("GlobalError: {0}", globalError));
+            }
+        }
+
+        public void learn(InputLayer inputLayer, OutputLayer expectedOutputLayer)
+        {
+            feedForward(inputLayer);
+            calculateDeltas(expectedOutputLayer);
+            adjustWeights();
         }
 
         public void feedForward(InputLayer inputLayer)
@@ -60,6 +103,80 @@ namespace HumanConnect4.NeuralNetwork
             {
                 neuron.calculateOutput();
             }
+        }
+
+        private void calculateDeltas(OutputLayer outputLayer)
+        {
+            if (outputLayer.Neurons.Count != OutputLayer.Neurons.Count)
+            {
+                throw new Exception(String.Format("Expected output layer must match number of neurons with current network model: {0} neurons.", OutputLayer.Neurons.Count));
+            }
+
+            for(int i = 0; i < OutputLayer.Neurons.Count; i++)
+            {
+                OutputLayer.Neurons[i].Error = outputLayer.Neurons[i].Output - OutputLayer.Neurons[i].Output;
+                OutputLayer.Neurons[i].calculateDelta();
+                foreach(Edge edge in OutputLayer.Neurons[i].Edges)
+                {
+                    edge.Input.Error += OutputLayer.Neurons[i].Delta * edge.Weight;
+                }
+            }
+
+            // iterate through hidden layers from the end to the beginning
+            for(int i = (HiddenLayers.Count - 1); i > 0; i -- )
+            {
+                foreach(Neuron neuron in HiddenLayers[i].getNeurons())
+                {
+                    neuron.calculateDelta();
+                    foreach (Edge edge in neuron.Edges)
+                    {
+                        edge.Input.Error += OutputLayer.Neurons[i].Delta * edge.Weight;
+                    }
+                }
+            }
+
+            foreach(PassiveNeuron neuron in InputLayer.Neurons)
+            {
+                neuron.calculateDelta();
+            }
+        }
+
+        private void adjustWeights()
+        {
+
+            foreach (AbstractHiddenLayer hiddenLayer in HiddenLayers)
+            {
+                foreach (Neuron neuron in hiddenLayer.getNeurons())
+                {
+                    foreach(Edge edge in neuron.Edges)
+                    {
+                        // skip momentum: + MOMENTUM * previousChange
+                        float change = (LEARNING_RATE * neuron.Delta * edge.Input.Output);
+                        edge.Weight += change;
+                    }
+                }
+            }
+
+            foreach (Neuron neuron in OutputLayer.Neurons)
+            {
+                foreach (Edge edge in neuron.Edges)
+                {
+                    // skip momentum: + MOMENTUM * previousChange
+                    float change = (LEARNING_RATE * neuron.Delta * edge.Input.Output);
+                    edge.Weight += change;
+                }
+            }
+        }
+
+        private float meanSquaredError()
+        {
+            // mean squared error
+            float sum = 0;
+            foreach(Neuron neuron in OutputLayer.Neurons)
+            {
+                sum += (float)Math.Pow(neuron.Error, 2);
+            }
+            return sum / outputLayer.Neurons.Count;
         }
 
     }

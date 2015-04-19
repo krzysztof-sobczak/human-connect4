@@ -27,6 +27,7 @@ namespace HumanConnect4
         {
             this.InitializeComponent();
             AI AI = new AI();
+            //AI.getMove();
         }
     }
 }
