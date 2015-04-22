@@ -1,0 +1,6 @@
+Wejœcie przekierowujemy z pliku:
+veleng <in.in
+
+W pliku s¹ kolejne ci¹gi ruchów (1-7), zakoñczone zerem. (Np. 440)
+Na wyjœciu uzyskujemy ten sam wiersz wejœciowy 
+plus wiersz z najlepszym ruchem wg Veleny.
