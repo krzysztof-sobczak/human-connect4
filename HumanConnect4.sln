@@ -15,6 +15,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Connect4Tests", "Connect4Te
 EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "Veleng", "Veleng\Veleng.vcxproj", "{38E9CBB5-AE62-421D-BE57-94D0EC316A7B}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DataGenerator", "DataGenerator\DataGenerator.csproj", "{53E05245-561A-4EB3-AC2C-E147AD020F8D}"
+EndProject
 Global
 	GlobalSection(SharedMSBuildProjectFiles) = preSolution
 		HumanConnect4\HumanConnect4.Shared\HumanConnect4.Shared.projitems*{0fb7b465-3b1a-4ebb-881b-261d70a1fb6c}*SharedItemsImports = 13
@@ -120,6 +122,22 @@ Global
 		{38E9CBB5-AE62-421D-BE57-94D0EC316A7B}.Release|x64.ActiveCfg = Release|Win32
 		{38E9CBB5-AE62-421D-BE57-94D0EC316A7B}.Release|x86.ActiveCfg = Release|Win32
 		{38E9CBB5-AE62-421D-BE57-94D0EC316A7B}.Release|x86.Build.0 = Release|Win32
+		{53E05245-561A-4EB3-AC2C-E147AD020F8D}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{53E05245-561A-4EB3-AC2C-E147AD020F8D}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{53E05245-561A-4EB3-AC2C-E147AD020F8D}.Debug|ARM.ActiveCfg = Debug|Any CPU
+		{53E05245-561A-4EB3-AC2C-E147AD020F8D}.Debug|Mixed Platforms.ActiveCfg = Debug|Any CPU
+		{53E05245-561A-4EB3-AC2C-E147AD020F8D}.Debug|Mixed Platforms.Build.0 = Debug|Any CPU
+		{53E05245-561A-4EB3-AC2C-E147AD020F8D}.Debug|Win32.ActiveCfg = Debug|Any CPU
+		{53E05245-561A-4EB3-AC2C-E147AD020F8D}.Debug|x64.ActiveCfg = Debug|Any CPU
+		{53E05245-561A-4EB3-AC2C-E147AD020F8D}.Debug|x86.ActiveCfg = Debug|Any CPU
+		{53E05245-561A-4EB3-AC2C-E147AD020F8D}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{53E05245-561A-4EB3-AC2C-E147AD020F8D}.Release|Any CPU.Build.0 = Release|Any CPU
+		{53E05245-561A-4EB3-AC2C-E147AD020F8D}.Release|ARM.ActiveCfg = Release|Any CPU
+		{53E05245-561A-4EB3-AC2C-E147AD020F8D}.Release|Mixed Platforms.ActiveCfg = Release|Any CPU
+		{53E05245-561A-4EB3-AC2C-E147AD020F8D}.Release|Mixed Platforms.Build.0 = Release|Any CPU
+		{53E05245-561A-4EB3-AC2C-E147AD020F8D}.Release|Win32.ActiveCfg = Release|Any CPU
+		{53E05245-561A-4EB3-AC2C-E147AD020F8D}.Release|x64.ActiveCfg = Release|Any CPU
+		{53E05245-561A-4EB3-AC2C-E147AD020F8D}.Release|x86.ActiveCfg = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
