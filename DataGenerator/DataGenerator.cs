@@ -1,8 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace DataGenerator
 {
@@ -18,8 +15,8 @@ namespace DataGenerator
             {
                 data.Add(j.ToString());
             }
-            
-            for (int k = 0; k < 7; k++)
+
+            for (int k = 0; k < 2; k++)
             {
                 len = data.Count;
                 for (int i = 0; i < len; i++)
