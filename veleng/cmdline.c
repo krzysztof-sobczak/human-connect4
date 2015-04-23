@@ -78,6 +78,5 @@ void command_line_input(struct board *board)
 	     }
      } while(flag); // We loop until a quit is forced.
 
-   printf("Program terminated\n");
    }
 
