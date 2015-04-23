@@ -1,5 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Diagnostics;
+using System.IO;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -39,6 +41,28 @@ namespace Helper
             board.MakeMoves(moves);
 
             return board;
+        }
+
+        public static String RunVeleng(String input)
+        {
+            Process p = new Process();
+            p.StartInfo.FileName = "D:\\dawid\\studia\\msi2\\repo\\Veleng\\Debug\\Veleng.exe";
+            p.StartInfo.CreateNoWindow = false;
+            p.StartInfo.UseShellExecute = false;
+            p.StartInfo.RedirectStandardInput = true;
+            p.StartInfo.RedirectStandardOutput = true;
+            p.StartInfo.WorkingDirectory = "D:\\dawid\\studia\\msi2\\repo\\Veleng\\Debug\\";
+            p.Start();
+
+            StreamWriter writer = p.StandardInput;
+            writer.Write(input);
+            writer.WriteLine("q");
+            writer.Close();
+
+            String data = p.StandardOutput.ReadToEnd();
+            p.WaitForExit();
+
+            return data;
         }
     }
 }
