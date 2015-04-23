@@ -66,9 +66,11 @@ void command_line_input(struct board *board)
              else if(answer==-1) printf("?Syntax error\n");
 
              // We made a positional error, that position is not reachable
-             // through a series of legal moves. For example we keep playing
-             // after four men have been connected.
+             // through a series of legal moves. 
              else if(answer==-2) printf("?Positional error\n");
+
+			 // For example we keep playing after four men have been connected.
+			 else if (answer == -20) printf("?End game\n");
 
              // Actually this is not of much use. We simply close the if-else
              // condition.

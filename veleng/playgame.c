@@ -81,7 +81,7 @@ short parse_input_string(char *str,struct board *board)
            if(board->stack[move]<BOARDY) makemove(board,move);
            else return -2;
 
-           if(cnt>=42 || endgame(board)!=0) return -2;
+           if(cnt>=42 || endgame(board)!=0) return -20;
            cnt++;
            }
 
