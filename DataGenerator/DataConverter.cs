@@ -3,7 +3,7 @@ using System.Diagnostics;
 using System.IO;
 using System.Threading;
 
-namespace Helper
+namespace DataGenerator
 {
     static class DataConverter
     {
@@ -40,64 +40,24 @@ namespace Helper
             return board;
         }
 
-        static String[] DevideInput(String input, int threads)
+        public static Board[] DevideData(String data)
         {
-            String[] inputs = new String[threads];
-
-            int len = input.Length / threads;
-            int start = 0;
-            int end = len;
-            for (int i = 0; i < threads-1; i++)
+            data = data.Replace("\r\n", "\n");
+            String[] lines = data.Split(Environment.NewLine.ToCharArray());
+            Board[] situations = new Board[lines.Length / 2];
+            for (int i = 0; i < situations.Length; i++)
             {
-                while (input[end - 1] != '\n') end++;
-                inputs[i] = input.Substring(start, end - start);
-                start = end;
-                end += len;
-            }
-            inputs[threads-1] = input.Substring(start, input.Length - start);
-
-            return inputs;
-        }
-
-        public static String RunVelengParallel(String input, int threads)
-        {
-            String[] inputs = DevideInput(input, threads);
-            Thread[] worker = new Thread[threads];
-            String[] data = new String[threads];
-            //String data = "";
-
-            for (int i = 0; i < threads; i++)
-            {
-                worker[i] = new Thread((id) =>
+                if (lines[i * 2 + 1].Length < 4)
                 {
-                    Thread.CurrentThread.IsBackground = true;
-
-                    Process p = new Process();
-                    p.StartInfo.FileName = "D:\\dawid\\studia\\msi2\\repo\\Veleng\\Debug\\Veleng.exe";
-                    p.StartInfo.CreateNoWindow = false;
-                    p.StartInfo.UseShellExecute = false;
-                    p.StartInfo.RedirectStandardInput = true;
-                    p.StartInfo.RedirectStandardOutput = true;
-                    p.StartInfo.WorkingDirectory = "D:\\dawid\\studia\\msi2\\repo\\Veleng\\Debug\\";
-                    p.Start();
-
-                    StreamWriter writer = p.StandardInput;
-                    writer.Write(inputs[(int)id]);
-                    writer.WriteLine("q");
-                    writer.Close();
-
-                    data[(int)id] = p.StandardOutput.ReadToEnd();
-                    p.WaitForExit();
-                });
-                worker[i].Start(i);
+                    Board b = new Board();
+                    b.MakeMoves(DataConverter.StringToMoves(lines[i * 2]));
+                    b.bestMove = lines[i * 2 + 1][0] - '0';
+                    situations[i] = b;
+                }
             }
 
-            for (int i = 0; i < threads; i++)
-            {
-                worker[i].Join();
-            }
-            
-            return String.Join("", data);
+            return situations;
         }
+
     }
 }

@@ -1,13 +1,15 @@
 ﻿using System;
 using System.IO;
 
-namespace Helper
+namespace DataGenerator
 {
     class Program
     {
-        static void Main(string[] args)
+        static String dataFilename = "data.txt";
+
+        // generate data
+        /*static void Main(string[] args)
         {
-            String dataFilename = "data.txt";
             String s = "44477746350";
             
             Board b = new Board();
@@ -21,6 +23,16 @@ namespace Helper
 
             File.WriteAllText(dataFilename, data);
             Console.ReadLine();
+        }*/
+
+        // load & parse data
+        static void Main(string[] args)
+        {
+            String dataFromFile = File.ReadAllText(dataFilename);
+            Board[] data = DataConverter.DevideData(dataFromFile);
+            
+            DataGenerator gen = new DataGenerator(data[data.Length-1]);
+            gen.GenerateContextsForFrame(Board.FramePosition.DOWN_LEFT);
         }
     }
 }
