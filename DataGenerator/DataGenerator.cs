@@ -149,7 +149,8 @@ namespace DataGenerator
                     // [F4]
                     context.deep += NonNegative(
                         yInFrame - NonNegative(
-                            board.ColSize[xInFrame] - board.FrameToDelta[(int)frame][1]
+                            board.ColSize[xInFrame + board.FrameToDelta[(int)frame][0]] 
+                                - board.FrameToDelta[(int)frame][1]
                         ) + 1
                     );
 
