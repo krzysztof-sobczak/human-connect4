@@ -7,7 +7,7 @@ using System.Text;
 
 namespace HumanConnect4.Connect4
 {
-    class NeuralNetwork : Network
+    public class NeuralNetwork : Network
     {
         public const int NUMBER_OF_CONTEXTS = 17;
         public const int NUMBER_OF_FRAMES = 4;
@@ -15,7 +15,7 @@ namespace HumanConnect4.Connect4
 
         private const int NUMBER_OF_FEATURE_DETECTORS = 1;
         private const int NUMBER_OF_OUTPUT_NEURONS_IN_DETECTOR = 3;
-        private const int NUMBER_OF_NEURONS_IN_SECOND_HIDDEN_LAYER = 7;
+        private const int NUMBER_OF_NEURONS_IN_SECOND_HIDDEN_LAYER = 5;
 
         public NeuralNetwork()
         {
@@ -34,7 +34,7 @@ namespace HumanConnect4.Connect4
         {
             InputLayer inputLayer = new InputLayer();
 
-            for (int i = 0; i < NUMBER_OF_CONTEXTS; i++)
+            for (int i = 0; i < NUMBER_OF_FRAMES * NUMBER_OF_CONTEXTS; i++)
             {
                 ExtendedContext context = ExtendedContext.getSample();
                 inputLayer.Neurons.AddRange(context.getPassiveNeurons());
@@ -46,21 +46,26 @@ namespace HumanConnect4.Connect4
         private ConvolutionLayer getDetectorsLayer(InputLayer inputLayer)
         {
             Layer patternLayer = new Layer(NUMBER_OF_CONTEXTS * NUMBER_OF_OUTPUT_NEURONS_IN_DETECTOR * NUMBER_OF_FEATURE_DETECTORS);
-            for (int i = 0; i < NUMBER_OF_CONTEXTS; i++)
+            ConvolutionLayer detectorsLayer = new ConvolutionLayer(NUMBER_OF_FRAMES, patternLayer);
+            // layers number is equal to the number of frames
+            for(int layerIndex = 0; layerIndex < detectorsLayer.Layers.Count; layerIndex++)
             {
-                List<AbstractNeuron> contextNeurons = new List<AbstractNeuron>();
-                contextNeurons.AddRange(inputLayer.Neurons.GetRange(i * ExtendedContext.CONTEXT_LENGTH, ExtendedContext.CONTEXT_LENGTH));
-                List<Neuron> contextDetectorNeurons = patternLayer.Neurons.GetRange(i * NUMBER_OF_OUTPUT_NEURONS_IN_DETECTOR, NUMBER_OF_OUTPUT_NEURONS_IN_DETECTOR);
-                Edge.connectAllNeurons(contextDetectorNeurons, contextNeurons);
+                for (int i = 0; i < NUMBER_OF_CONTEXTS; i++)
+                {
+                    List<AbstractNeuron> contextNeurons = new List<AbstractNeuron>();
+                    contextNeurons.AddRange(inputLayer.Neurons.GetRange(layerIndex * NUMBER_OF_CONTEXTS * ExtendedContext.CONTEXT_LENGTH + i * ExtendedContext.CONTEXT_LENGTH, ExtendedContext.CONTEXT_LENGTH));
+                    List<Neuron> contextDetectorNeurons = detectorsLayer.Layers[layerIndex].Neurons.GetRange(i * NUMBER_OF_OUTPUT_NEURONS_IN_DETECTOR, NUMBER_OF_OUTPUT_NEURONS_IN_DETECTOR);
+                    Edge.connectAllNeurons(contextDetectorNeurons, contextNeurons);
+                }
             }
-            ConvolutionLayer detectorsLayer = new ConvolutionLayer(NUMBER_OF_CONTEXTS, patternLayer);
 
             return detectorsLayer;
         }
 
         private ConvolutionLayer getSecondHiddenLayer(ConvolutionLayer detectorsLayer)
         {
-            ConvolutionLayer secondHiddenLayer = new ConvolutionLayer(NUMBER_OF_CONTEXTS, new Layer(NUMBER_OF_NEURONS_IN_SECOND_HIDDEN_LAYER), detectorsLayer);
+            Layer patternLayer = new Layer(NUMBER_OF_NEURONS_IN_SECOND_HIDDEN_LAYER);
+            ConvolutionLayer secondHiddenLayer = new ConvolutionLayer(NUMBER_OF_FRAMES, patternLayer, detectorsLayer);
             return secondHiddenLayer;
         }
 

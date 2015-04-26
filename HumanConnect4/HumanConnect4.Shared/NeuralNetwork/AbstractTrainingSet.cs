@@ -5,7 +5,7 @@ using System.Text;
 
 namespace HumanConnect4.NeuralNetwork
 {
-    abstract class AbstractTrainingSet
+    public abstract class AbstractTrainingSet
     {
         private List<InputLayer> inputLayers;
 

@@ -5,7 +5,7 @@ using System.Text;
 
 namespace HumanConnect4.Connect4
 {
-    class TrainingSetFactory
+    public class TrainingSetFactory
     {
         public static AbstractTrainingSet Create<Type>()
            where Type : AbstractTrainingSet, new()

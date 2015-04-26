@@ -4,7 +4,7 @@ using System.Text;
 
 namespace HumanConnect4.NeuralNetwork.Neurons
 {
-    abstract class AbstractNeuron
+    public abstract class AbstractNeuron
     {
         private float output;
 

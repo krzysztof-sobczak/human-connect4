@@ -4,7 +4,7 @@ using System.Text;
 
 namespace HumanConnect4.NeuralNetwork.Neurons
 {
-    class PassiveNeuron : AbstractNeuron
+    public class PassiveNeuron : AbstractNeuron
     {
 
         public PassiveNeuron(int output)

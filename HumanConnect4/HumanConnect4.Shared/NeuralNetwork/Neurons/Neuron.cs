@@ -4,7 +4,7 @@ using System.Text;
 
 namespace HumanConnect4.NeuralNetwork.Neurons
 {
-    class Neuron : AbstractNeuron
+    public class Neuron : AbstractNeuron
     {
         private int bias = 1;
 

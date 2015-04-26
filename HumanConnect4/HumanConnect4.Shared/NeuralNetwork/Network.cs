@@ -4,10 +4,12 @@ using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Text;
+using System.Xml;
+using System.Xml.Serialization;
 
 namespace HumanConnect4.NeuralNetwork
 {
-    class Network
+    public class Network
     {
         private const float LEARNING_RATE = 1;
         private const float MOMENTUM = 0;

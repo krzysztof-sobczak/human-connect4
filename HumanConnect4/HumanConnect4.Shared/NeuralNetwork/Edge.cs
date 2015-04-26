@@ -5,7 +5,7 @@ using System.Text;
 
 namespace HumanConnect4.NeuralNetwork
 {
-    class Edge
+    public class Edge
     {
         private float weight;
 

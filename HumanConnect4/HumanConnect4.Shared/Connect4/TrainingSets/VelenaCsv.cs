@@ -1,33 +1,46 @@
-﻿using HumanConnect4.NeuralNetwork.Layers;
+﻿using CsvHelper;
+using HumanConnect4.NeuralNetwork.Layers;
 using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Text;
+using System.Threading.Tasks;
+using Windows.Storage;
 
 namespace HumanConnect4.Connect4.TrainingSets
 {
-    class VelenaCsv : AbstractTrainingSet
+    public class VelenaCsv : AbstractTrainingSet
     {
+
+        private const string velenaCsvPath = "velena.csv";
 
         public VelenaCsv()
         {
             InputLayers = new List<InputLayer>();
-            InputLayers.Add(getInputLayer());
-
             OutputLayers = new List<OutputLayer>();
-            OutputLayers.Add(columnNumberToOutputLayer(2));
+
+            AsyncHelpers.RunSync(() => getFromVelenaCsv());
         }
 
-        private InputLayer getInputLayer()
+        private async Task getFromVelenaCsv()
         {
-            InputLayer inputLayer = new InputLayer();
-
-            for (int i = 0; i < NUMBER_OF_CONTEXTS; i++)
+            IReadOnlyList<StorageFolder> folders = await Windows.ApplicationModel.Package.Current.InstalledLocation.GetFoldersAsync();
+            List<StorageFolder> list = new List<StorageFolder>(folders);
+            List<StorageFile> files = new List<StorageFile>(await list[1].GetFilesAsync());
+            StorageFile file = await StorageFile.GetFileFromApplicationUriAsync(new Uri(@"ms-appx:///Resources/" + velenaCsvPath));
+            using (Stream stream = (await file.OpenReadAsync()).AsStreamForRead())
             {
-                ExtendedContext context = ExtendedContext.getSample();
-                inputLayer.Neurons.AddRange(context.getPassiveNeurons());
+                using (var reader = new CsvReader(new StreamReader(stream)))
+                {
+                    reader.Configuration.RegisterClassMap<TrainingSetCsvMap>();
+                    while (reader.Read())
+                    {
+                        TrainingSetCsv instance = reader.GetRecord<TrainingSetCsv>();
+                        InputLayers.Add(instance.getInputLayer());
+                        OutputLayers.Add(columnNumberToOutputLayer(instance.BestColumn));
+                    }
+                }
             }
-
-            return inputLayer;
         }
         
     }

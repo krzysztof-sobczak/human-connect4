@@ -4,7 +4,7 @@ using System.Text;
 
 namespace HumanConnect4.NeuralNetwork
 {
-    class ActivationFunction
+    public class ActivationFunction
     {
         public static float sigmoid(float x)
         {

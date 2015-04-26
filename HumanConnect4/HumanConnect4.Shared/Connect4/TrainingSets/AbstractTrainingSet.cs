@@ -5,7 +5,7 @@ using System.Text;
 
 namespace HumanConnect4.Connect4.TrainingSets
 {
-    abstract class AbstractTrainingSet : HumanConnect4.NeuralNetwork.AbstractTrainingSet
+    public abstract class AbstractTrainingSet : HumanConnect4.NeuralNetwork.AbstractTrainingSet
     {
         protected const int NUMBER_OF_CONTEXTS = NeuralNetwork.NUMBER_OF_CONTEXTS;
         protected const int NUMBER_OF_FRAMES = NeuralNetwork.NUMBER_OF_FRAMES;

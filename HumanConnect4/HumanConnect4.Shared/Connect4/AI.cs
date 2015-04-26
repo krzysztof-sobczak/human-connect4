@@ -23,7 +23,7 @@ namespace HumanConnect4.Connect4
         {
             this.NeuralNetwork = new NeuralNetwork();
 
-            AbstractTrainingSet trainingSet = TrainingSetFactory.Create<TrainingSets.Sample>();
+            AbstractTrainingSet trainingSet = TrainingSetFactory.Create<TrainingSets.VelenaCsv>();
 
             NeuralNetwork.train(trainingSet);
         }

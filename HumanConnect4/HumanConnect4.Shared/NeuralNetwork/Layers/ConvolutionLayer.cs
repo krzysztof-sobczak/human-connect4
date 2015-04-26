@@ -5,7 +5,7 @@ using System.Text;
 
 namespace HumanConnect4.NeuralNetwork.Layers
 {
-    class ConvolutionLayer : AbstractHiddenLayer
+    public class ConvolutionLayer : AbstractHiddenLayer
     {
 
         private List<Layer> layers;
@@ -35,7 +35,7 @@ namespace HumanConnect4.NeuralNetwork.Layers
             this.Layers = new List<Layer>();
             for (int i = 0; i < numberOfSublayers; i++)
             {
-                this.Layers.Add(sublayerPattern);
+                this.Layers.Add(sublayerPattern.Clone());
             }
         }
 
@@ -46,7 +46,7 @@ namespace HumanConnect4.NeuralNetwork.Layers
             {
                 for (int i = 0; i < numberOfSublayers; i++)
                 {
-                    Layer layer = sublayerPattern;
+                    Layer layer = sublayerPattern.Clone();
                     foreach(Neuron neuron in layer.Neurons)
                     {
                         foreach(Neuron inputNeuron in convolutionLayerToConnectWith.Layers[i].Neurons) {
@@ -54,7 +54,7 @@ namespace HumanConnect4.NeuralNetwork.Layers
                             neuron.Edges.Add(edge);
                         }
                     }
-                    this.Layers.Add(sublayerPattern);
+                    this.Layers.Add(layer);
                 }
             }
             else

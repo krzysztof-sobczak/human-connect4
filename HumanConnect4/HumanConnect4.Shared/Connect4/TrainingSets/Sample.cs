@@ -5,7 +5,7 @@ using System.Text;
 
 namespace HumanConnect4.Connect4.TrainingSets
 {
-    class Sample : AbstractTrainingSet
+    public class Sample : AbstractTrainingSet
     {
 
         public Sample()

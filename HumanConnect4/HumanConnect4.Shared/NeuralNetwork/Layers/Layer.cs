@@ -5,7 +5,7 @@ using System.Text;
 
 namespace HumanConnect4.NeuralNetwork.Layers
 {
-    class Layer
+    public class Layer
     {
         private List<Neuron> neurons;
 
@@ -15,9 +15,14 @@ namespace HumanConnect4.NeuralNetwork.Layers
             set { neurons = value; }
         }
 
-        public Layer()
+        public  Layer()
         {
             this.Neurons = new List<Neuron>();
+        }
+
+        public Layer(List<Neuron> neurons)
+        {
+            this.Neurons = neurons;
         }
 
         public Layer(int size)
@@ -27,6 +32,16 @@ namespace HumanConnect4.NeuralNetwork.Layers
             {
                 this.Neurons.Add(new Neuron());
             }
+        }
+
+        public Layer Clone()
+        {
+            List<Neuron> neurons = new List<Neuron>();
+            foreach(Neuron neuron in this.Neurons)
+            {
+                neurons.Add(new Neuron());
+            }
+            return new Layer(neurons);
         }
 
     }
