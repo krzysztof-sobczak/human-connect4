@@ -5,7 +5,7 @@ using System.Threading;
 
 namespace DataGenerator
 {
-    static class DataConverter
+    public static class DataConverter
     {
         /// <summary>
         /// Konwersja ciągu znaków, odpowiadająca ruchom z zakresu 1-7, 

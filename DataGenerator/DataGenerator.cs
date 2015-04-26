@@ -6,7 +6,7 @@ using System.Threading;
 
 namespace DataGenerator
 {
-    class DataGenerator
+    public class DataGenerator
     {
         Board board;
 
@@ -113,7 +113,7 @@ namespace DataGenerator
             }
         }
 
-        public void GenerateContextsForFrame(Board.FramePosition frame)
+        public Context[] GenerateContextsForFrame(Board.FramePosition frame)
         {
             int[][][] contextsLines = GenerateContextsLinesParams();
             int[,] crossingLinePerField = new int[5, 4];
@@ -127,7 +127,7 @@ namespace DataGenerator
                 context.contextType = (Context.ContextType) contextsLines[contextsLineIndex][2][0];
 
                 // [F3]
-                context.row = contextsLines[contextsLineIndex][0][0];
+                context.row = contextsLines[contextsLineIndex][0][1];
 
                 // [F4]
                 context.deep = 0;
@@ -210,7 +210,7 @@ namespace DataGenerator
                 contexts.Add(context);
             }
 
-            Context[] contextToResult = contexts.ToArray();
+            Context[] contextToReturn = contexts.ToArray();
 
             // [A3/2]
             // dla każdego pola w kontekście zliczamy 
@@ -222,14 +222,21 @@ namespace DataGenerator
 
                 for (int i = 0; i < 4; i++)
                 {
-                    contextToResult[contextsLineIndex].crossingOpenedLines 
+                    contextToReturn[contextsLineIndex].crossingOpenedLines 
                         += crossingLinePerField[xInFrame, yInFrame];
+
+                    /*if (IfItsGoodContext(contextToReturn[contextsLineIndex]))
+                    {
+                        contextToReturn[contextsLineIndex].crossingOpenedLines -= 4;
+                    }*/
 
                     // upgrade position
                     xInFrame = xInFrame + contextsLines[contextsLineIndex][1][0];
                     yInFrame = yInFrame + contextsLines[contextsLineIndex][1][1];
                 }
             }
+
+            return contextToReturn;
         }
 
         private bool IfItsGoodContext(Context context)

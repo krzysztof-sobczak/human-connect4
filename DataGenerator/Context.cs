@@ -1,8 +1,23 @@
 ﻿
 namespace DataGenerator
 {
-    class Context
+    public class Context
     {
+        public Context () {	}
+
+        public Context(Board.DiskColor[] values, ContextType contextType, 
+            int row, int deep, Board.DiskColor whoCanWin, 
+            int missingDisk, int crossingOpenedLines)
+        {
+            this.values = values;
+            this.contextType = contextType;
+            this.row = row;
+            this.deep = deep;
+            this.whoCanWin = whoCanWin;
+            this.missingDisk = missingDisk;
+            this.crossingOpenedLines = crossingOpenedLines;
+        }
+
         public enum ContextType
         {
             VERTICAL,
@@ -10,6 +25,7 @@ namespace DataGenerator
             SLASH,
             BACKSLASH
         }
+
 
         public Board.DiskColor[] values = new Board.DiskColor[4];
 
