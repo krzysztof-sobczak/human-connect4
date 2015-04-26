@@ -72,5 +72,27 @@ namespace HumanConnect4.NeuralNetwork.Layers
             }
             return neurons;
         }
+
+        public override void calculateDeltas()
+        {
+            foreach (Layer layer in Layers)
+            {
+                for(int neuronIndex = 0; neuronIndex < layer.Neurons.Count; neuronIndex++)
+                {
+                    layer.Neurons[neuronIndex].calculateDelta();
+                    for(int edgeIndex = 0; edgeIndex < layer.Neurons[neuronIndex].Edges.Count; edgeIndex ++)
+                    {
+                        // in convolution layer every edge has associated edge in other inner layers
+                        foreach (Layer updateLayer in Layers)
+                        {
+                            // divide standard delta by number of layers in convolution layer
+                            // to get delta for shared weights as average of deltas of shared weights
+                            updateLayer.Neurons[neuronIndex].Edges[edgeIndex].Input.Error += 
+                                (layer.Neurons[neuronIndex].Delta * layer.Neurons[neuronIndex].Edges[edgeIndex].Weight) / Layers.Count;
+                        }
+                    }
+                }
+            }
+        }
     }
 }

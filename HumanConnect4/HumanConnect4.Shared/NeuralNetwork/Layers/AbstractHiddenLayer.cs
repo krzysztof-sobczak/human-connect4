@@ -8,5 +8,7 @@ namespace HumanConnect4.NeuralNetwork.Layers
     abstract class AbstractHiddenLayer
     {
         abstract public List<Neuron> getNeurons();
+
+        abstract public void calculateDeltas();
     }
 }

@@ -34,6 +34,7 @@ namespace HumanConnect4.NeuralNetwork.Neurons
         public void calculateDelta()
         {
             Delta = Error * ActivationFunction.sigmoidDerivative(Output);
+            //System.Diagnostics.Debug.WriteLine(String.Format("Calculated delta: {0}", this.Delta));
         }
     }
 }
