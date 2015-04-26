@@ -54,7 +54,7 @@
   </Choose>
   <ItemGroup>
     <Compile Include="DataGeneratorTest.cs" />
-    <Compile Include="NeuronTest.cs" />
+    <Compile Include="NetworkTest.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>

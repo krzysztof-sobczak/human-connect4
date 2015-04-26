@@ -6,7 +6,7 @@ using System.Text;
 
 namespace HumanConnect4.Connect4
 {
-    class ExtendedContext
+    public class ExtendedContext
     {
         private const int BIAS = 1;
         private const int FEATURES_LENGTH = 4;

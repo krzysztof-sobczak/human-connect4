@@ -5,7 +5,7 @@ using System.Text;
 
 namespace HumanConnect4.NeuralNetwork.Layers
 {
-    class InputLayer
+    public class InputLayer
     {
         private List<PassiveNeuron> neurons;
 

@@ -4,10 +4,12 @@ using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Text;
+using System.Xml;
+using System.Xml.Serialization;
 
 namespace HumanConnect4.NeuralNetwork
 {
-    class Network
+    public class Network
     {
         private const float LEARNING_RATE = 1;
         private const float MOMENTUM = 0;
@@ -50,20 +52,20 @@ namespace HumanConnect4.NeuralNetwork
             HiddenLayers = new List<AbstractHiddenLayer>();
         }
 
-        public void train(List<InputLayer> inputLayers, List<OutputLayer> expectedOutputLayers)
+        public void train(AbstractTrainingSet trainingSet)
         {
             GlobalError = new List<float>();
-            if (inputLayers.Count != expectedOutputLayers.Count)
+            if (trainingSet.InputLayers.Count != trainingSet.OutputLayers.Count)
             {
                 throw new Exception("Training set must contain the same number of elements inputLayers and expectedOutputPayers .");
             }
             for(int i = 0; i < TRAIN_ITERATIONS; i++)
             {
                 float errorSum = 0;
-                int trainInstancesCount = inputLayers.Count;
+                int trainInstancesCount = trainingSet.InputLayers.Count;
                 for(int k = 0; k < trainInstancesCount; k++)
                 {
-                    learn(inputLayers[k],expectedOutputLayers[k]);
+                    learn(trainingSet.InputLayers[k], trainingSet.OutputLayers[k]);
                     errorSum += meanSquaredError();
                 }
                 float globalError = errorSum / trainInstancesCount;
@@ -125,14 +127,7 @@ namespace HumanConnect4.NeuralNetwork
             // iterate through hidden layers from the end to the beginning
             for(int i = (HiddenLayers.Count - 1); i > 0; i -- )
             {
-                foreach(Neuron neuron in HiddenLayers[i].getNeurons())
-                {
-                    neuron.calculateDelta();
-                    foreach (Edge edge in neuron.Edges)
-                    {
-                        edge.Input.Error += OutputLayer.Neurons[i].Delta * edge.Weight;
-                    }
-                }
+                HiddenLayers[i].calculateDeltas();
             }
 
             foreach(PassiveNeuron neuron in InputLayer.Neurons)

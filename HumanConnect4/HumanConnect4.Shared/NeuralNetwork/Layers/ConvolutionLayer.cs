@@ -5,7 +5,7 @@ using System.Text;
 
 namespace HumanConnect4.NeuralNetwork.Layers
 {
-    class ConvolutionLayer : AbstractHiddenLayer
+    public class ConvolutionLayer : AbstractHiddenLayer
     {
 
         private List<Layer> layers;
@@ -35,7 +35,7 @@ namespace HumanConnect4.NeuralNetwork.Layers
             this.Layers = new List<Layer>();
             for (int i = 0; i < numberOfSublayers; i++)
             {
-                this.Layers.Add(sublayerPattern);
+                this.Layers.Add(sublayerPattern.Clone());
             }
         }
 
@@ -46,7 +46,7 @@ namespace HumanConnect4.NeuralNetwork.Layers
             {
                 for (int i = 0; i < numberOfSublayers; i++)
                 {
-                    Layer layer = sublayerPattern;
+                    Layer layer = sublayerPattern.Clone();
                     foreach(Neuron neuron in layer.Neurons)
                     {
                         foreach(Neuron inputNeuron in convolutionLayerToConnectWith.Layers[i].Neurons) {
@@ -54,7 +54,7 @@ namespace HumanConnect4.NeuralNetwork.Layers
                             neuron.Edges.Add(edge);
                         }
                     }
-                    this.Layers.Add(sublayerPattern);
+                    this.Layers.Add(layer);
                 }
             }
             else
@@ -71,6 +71,28 @@ namespace HumanConnect4.NeuralNetwork.Layers
                 neurons.AddRange(layer.Neurons);
             }
             return neurons;
+        }
+
+        public override void calculateDeltas()
+        {
+            foreach (Layer layer in Layers)
+            {
+                for(int neuronIndex = 0; neuronIndex < layer.Neurons.Count; neuronIndex++)
+                {
+                    layer.Neurons[neuronIndex].calculateDelta();
+                    for(int edgeIndex = 0; edgeIndex < layer.Neurons[neuronIndex].Edges.Count; edgeIndex ++)
+                    {
+                        // in convolution layer every edge has associated edge in other inner layers
+                        foreach (Layer updateLayer in Layers)
+                        {
+                            // divide standard delta by number of layers in convolution layer
+                            // to get delta for shared weights as average of deltas of shared weights
+                            updateLayer.Neurons[neuronIndex].Edges[edgeIndex].Input.Error += 
+                                (layer.Neurons[neuronIndex].Delta * layer.Neurons[neuronIndex].Edges[edgeIndex].Weight) / Layers.Count;
+                        }
+                    }
+                }
+            }
         }
     }
 }
