@@ -1,9 +1,7 @@
 ﻿using CsvHelper;
 using System;
 using System.Collections.Generic;
-using System.Diagnostics;
 using System.IO;
-using System.Threading;
 
 namespace DataGenerator
 {
@@ -36,7 +34,7 @@ namespace DataGenerator
             this.board = board;
         }
 
-        public static String GenerateInputForVeleng1()
+        public static String GenerateEasyInputForVeleng()
         {
             String input = "";
             List<String> data = new List<String>();
@@ -69,77 +67,30 @@ namespace DataGenerator
             return input;
         }
 
-        static String[] DevideInput(String input, int threads)
+        public static String GenerateRandomInputForVeleng(int boardsCount)
         {
-            String[] inputs = new String[threads];
+            const int minMovesCount = 4;
+            const int maxMovesCount = 6 * 7 - 10;
 
-            int len = input.Length / threads;
-            int start = 0;
-            int end = len;
-            for (int i = 0; i < threads - 1; i++)
+            String input = "";
+            Random rand = new Random();
+
+            if (boardsCount < 1) boardsCount = rand.Next();
+
+            for (int i = 0; i < boardsCount; i++)
             {
-                while (input[end - 1] != '\n') end++;
-                inputs[i] = input.Substring(start, end - start);
-                start = end;
-                end += len;
-            }
-            inputs[threads - 1] = input.Substring(start, input.Length - start);
-
-            return inputs;
-        }
-
-        static String GetVelengWorkingDirectory()
-        {
-            var path = Path.GetDirectoryName(
-                System.Reflection.Assembly.GetExecutingAssembly().GetName().CodeBase);
-
-            while (!Path.GetFileName(path).Equals("DataGenerator"))
-            {
-                path = Path.GetDirectoryName(path);
-            }
-            path = Path.GetDirectoryName(path);
-
-            return path.Substring(6) + "\\Veleng\\Debug\\";
-        }
-        
-        public static String RunVelengParallel(String input, int threads)
-        {
-            String[] inputs = DevideInput(input, threads);
-            Thread[] worker = new Thread[threads];
-            String[] data = new String[threads];
-
-            for (int i = 0; i < threads; i++)
-            {
-                worker[i] = new Thread((id) =>
+                int movesCount = minMovesCount + rand.Next(
+                    maxMovesCount - minMovesCount + 1
+                );
+                string move = "";
+                for (int j = 0; j < movesCount; j++)
                 {
-                    Thread.CurrentThread.IsBackground = true;
-
-                    Process p = new Process();
-                    p.StartInfo.FileName = GetVelengWorkingDirectory() + "Veleng.exe";
-                    p.StartInfo.CreateNoWindow = false;
-                    p.StartInfo.UseShellExecute = false;
-                    p.StartInfo.RedirectStandardInput = true;
-                    p.StartInfo.RedirectStandardOutput = true;
-                    p.StartInfo.WorkingDirectory = GetVelengWorkingDirectory();
-                    p.Start();
-
-                    StreamWriter writer = p.StandardInput;
-                    writer.Write(inputs[(int)id]);
-                    writer.WriteLine("q");
-                    writer.Close();
-
-                    data[(int)id] = p.StandardOutput.ReadToEnd();
-                    p.WaitForExit();
-                });
-                worker[i].Start(i);
+                    move += (rand.Next(7) + 1).ToString();
+                }
+                input += move + '0' + Environment.NewLine;
             }
-
-            for (int i = 0; i < threads; i++)
-            {
-                worker[i].Join();
-            }
-
-            return String.Join("", data);
+            
+            return input;
         }
 
         public Context[][] GenerateContexts()
@@ -355,13 +306,11 @@ namespace DataGenerator
             else return 0;
         }
 
-
-        public static void GenerateData(String path)
+        public static void GenerateData(String path, String input, int threadsCount)
         {
-            String input1 = DataGenerator.GenerateInputForVeleng1();
-            Console.WriteLine(input1);
+            //Console.WriteLine(input);
 
-            String boardsS = DataGenerator.RunVelengParallel(input1, 1);
+            String boardsS = VelengHelper.RunVelengParallel(input, threadsCount);
             Board[] boards = DataConverter.ParseData(boardsS);
 
             using (var stream = new StreamWriter(path))
