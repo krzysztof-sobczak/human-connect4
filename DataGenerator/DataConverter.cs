@@ -40,7 +40,7 @@ namespace DataGenerator
             return board;
         }
 
-        public static Board[] DevideData(String data)
+        public static Board[] ParseData(String data)
         {
             data = data.Replace("\r\n", "\n");
             String[] lines = data.Split(Environment.NewLine.ToCharArray());

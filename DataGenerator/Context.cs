@@ -42,5 +42,23 @@ namespace DataGenerator
         public int missingDisk;
         // [A3]
         public int crossingOpenedLines;
+
+
+        public override string ToString()
+        {
+            string s = "{";
+            for (int i = 0; i < values.Length; i++)
+			{
+                s += ((int)values[i]).ToString() + ",";
+			}
+            s += ((int)contextType).ToString() + ",";
+            s += row.ToString() + ",";
+            s += deep.ToString() + ",";
+            s += ((int)whoCanWin).ToString() + ",";
+            s += missingDisk.ToString() + ",";
+            s += crossingOpenedLines.ToString() + "}";
+            return s;
+        }
+
     }
 }
