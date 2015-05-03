@@ -19,12 +19,16 @@
     <Compile Include="$(MSBuildThisFileDirectory)Connect4\AI.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Connect4\ExtendedContext.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Connect4\NeuralNetwork.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Connect4\TestSetFactory.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Connect4\TestSets\AbstractTestSet.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Connect4\TestSets\VelenaCsv.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Connect4\TrainingSetFactory.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Connect4\TrainingSets\AbstractTrainingSet.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Connect4\TrainingSets\TrainingSetCsvMap.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Connect4\TrainingSets\TrainingSetCsv.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Connect4\TrainingSets\VelenaCsv.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Connect4\TrainingSets\Sample.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)NeuralNetwork\AbstractTestSet.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)NeuralNetwork\ActivationFunction.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)NeuralNetwork\Edge.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)NeuralNetwork\Layers\AbstractHiddenLayer.cs" />
@@ -41,7 +45,15 @@
     <Compile Include="$(MSBuildThisFileDirectory)XmlIO.cs" />
   </ItemGroup>
   <ItemGroup>
-    <Content Include="$(MSBuildThisFileDirectory)Resources\velena.csv">
+    <Content Include="$(MSBuildThisFileDirectory)Resources\velena_learn.csv">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="$(MSBuildThisFileDirectory)Resources\velena_test.csv">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="$(MSBuildThisFileDirectory)Resources\velena_sample.csv">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
   </ItemGroup>

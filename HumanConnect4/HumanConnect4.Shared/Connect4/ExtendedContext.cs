@@ -9,8 +9,8 @@ namespace HumanConnect4.Connect4
     public class ExtendedContext
     {
         private const int BIAS = 1;
-        private const int FEATURES_LENGTH = 4;
-        private const int ATTRIBUTES_LENGTH = 4;
+        private const int FEATURES_LENGTH = 5;
+        private const int ATTRIBUTES_LENGTH = 5;
         private const int VALUES_LENGTH = FEATURES_LENGTH + ATTRIBUTES_LENGTH;
         public const int CONTEXT_LENGTH = VALUES_LENGTH + 1;
 
@@ -54,7 +54,7 @@ namespace HumanConnect4.Connect4
 
         public static ExtendedContext getSample()
         {
-            return new ExtendedContext(new List<int>(new int[] { 1, 0, 0, 1, 0, 1, 1, 1 }));
+            return new ExtendedContext(new List<int>(new int[] { 1, 0, 0, 1, 0, 1, 1, 1, 0, 1 }));
         }
     }
 }

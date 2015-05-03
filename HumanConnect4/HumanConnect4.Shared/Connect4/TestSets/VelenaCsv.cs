@@ -1,5 +1,4 @@
 ﻿using CsvHelper;
-using HumanConnect4.Connect4.TrainingSets;
 using HumanConnect4.NeuralNetwork.Layers;
 using System;
 using System.Collections.Generic;
@@ -8,12 +7,12 @@ using System.Text;
 using System.Threading.Tasks;
 using Windows.Storage;
 
-namespace HumanConnect4.Connect4.TestSets
+namespace HumanConnect4.Connect4.TrainingSets
 {
-    public class VelenaCsv : AbstractTestSet
+    public class VelenaCsv : AbstractTrainingSet
     {
 
-        private const string velenaCsvPath = "velena_test.csv";
+        private const string velenaCsvPath = "velena_learn.csv";
 
         public VelenaCsv()
         {

@@ -13,7 +13,7 @@ namespace HumanConnect4.NeuralNetwork
     {
         private const float LEARNING_RATE = 1;
         private const float MOMENTUM = 0;
-        private const int TRAIN_ITERATIONS = 50;
+        private const int TRAIN_ITERATIONS = 200;
 
         private InputLayer inputLayer;
 
@@ -57,7 +57,7 @@ namespace HumanConnect4.NeuralNetwork
             GlobalError = new List<float>();
             if (trainingSet.InputLayers.Count != trainingSet.OutputLayers.Count)
             {
-                throw new Exception("Training set must contain the same number of elements inputLayers and expectedOutputPayers .");
+                throw new Exception("Training set must contain the same number of elements inputLayers and expectedOutputLayers .");
             }
             for(int i = 0; i < TRAIN_ITERATIONS; i++)
             {

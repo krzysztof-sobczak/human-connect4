@@ -3,6 +3,7 @@ using HumanConnect4.NeuralNetwork.Layers;
 using HumanConnect4.NeuralNetwork.Neurons;
 using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Text;
 
 namespace HumanConnect4.Connect4
@@ -28,6 +29,51 @@ namespace HumanConnect4.Connect4
             this.HiddenLayers.Add(secondHiddenLayer);
 
             this.OutputLayer = getOutputLayer(secondHiddenLayer);
+        }
+
+        public void test(AbstractTestSet testSet)
+        {
+            if (testSet.InputLayers.Count != testSet.OutputLayers.Count)
+            {
+                throw new Exception("Training set must contain the same number of elements inputLayers and expectedOutputLayers .");
+            }
+            float positiveResultCount = 0;
+            float negativeResultCount = 0;
+            int testInstancesCount = testSet.InputLayers.Count;
+            for (int k = 0; k < testInstancesCount; k++)
+            {
+                int expectedResult = getColumnFromOutputLayer(testSet.OutputLayers[k]);
+                int networkResult = getMove(testSet.InputLayers[k]);
+                if (expectedResult == networkResult)
+                {
+                    positiveResultCount++;
+                } else {
+                    negativeResultCount++;
+                }
+                Debug.WriteLine(String.Format("[Test {0}] Expected result: {1}, Network result: {2}", k, expectedResult, networkResult));
+            }
+            var networkAccuracy = Math.Round((positiveResultCount / (positiveResultCount + negativeResultCount)) * 100, 2);
+            Debug.WriteLine(String.Format("Network accuracy: {0}%", networkAccuracy));
+        }
+
+        public int getMove(InputLayer inputLayer)
+        {
+            feedForward(inputLayer);
+            return getColumnFromOutputLayer(OutputLayer);
+        }
+        
+        private int getColumnFromOutputLayer(OutputLayer outputLayer)
+        {
+            int bestMoveIndex = 0;
+            for (int i = 0; i < outputLayer.Neurons.Count; i++)
+            {
+                if (outputLayer.Neurons[i].Output > outputLayer.Neurons[bestMoveIndex].Output)
+                {
+                    bestMoveIndex = i;
+                }
+            }
+            int bestMove = bestMoveIndex + 1;
+            return bestMove;
         }
 
         private InputLayer getInputLayer()
