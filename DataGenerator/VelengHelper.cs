@@ -37,7 +37,7 @@ namespace DataGenerator
             }
             path = Path.GetDirectoryName(path);
 
-            return path.Substring(6) + "\\Veleng\\Debug\\";
+            return path.Substring(6) + "\\Veleng\\Release\\";
         }
 
         public static String RunVelengParallel(String input, int threads)
