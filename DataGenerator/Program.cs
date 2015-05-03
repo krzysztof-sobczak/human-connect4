@@ -1,38 +1,27 @@
 ﻿using System;
+using System.Diagnostics;
 using System.IO;
 
 namespace DataGenerator
 {
     class Program
     {
-        static String dataFilename = "data.txt";
-
-        // generate data
-        /*static void Main(string[] args)
+        static void Main()
         {
-            String s = "44477746350";
-            
-            Board b = new Board();
-            b.MakeMoves(DataConverter.StringToMoves(s));
+            string s = DataGenerator.GenerateRandomInputForVeleng(100);
+            var path = Path.GetDirectoryName(
+                Path.GetDirectoryName(Path.GetDirectoryName(
+                    System.Reflection.Assembly.GetExecutingAssembly().GetName().CodeBase)
+                )).Substring(6);
 
-            String input1 = DataGenerator.DataGenerator.GenerateInputForVeleng1();
-            Console.WriteLine(input1);
+            var watch = Stopwatch.StartNew();
+            DataGenerator.GenerateData(path + "\\data5.csv", 
+                DataGenerator.GenerateRandomInputForVeleng(1500), 8);
 
-            String data = DataConverter.RunVelengParallel(input1, 8);
-            Console.WriteLine(data);
-
-            File.WriteAllText(dataFilename, data);
+            watch.Stop();
+            var elapsedMs = watch.ElapsedMilliseconds;
+            Console.WriteLine("Generated in " + elapsedMs.ToString() + "ms");
             Console.ReadLine();
-        }*/
-
-        // load & parse data
-        static void Main(string[] args)
-        {
-            String dataFromFile = File.ReadAllText(dataFilename);
-            Board[] data = DataConverter.DevideData(dataFromFile);
-            
-            DataGenerator gen = new DataGenerator(data[data.Length-1]);
-            gen.GenerateContextsForFrame(Board.FramePosition.DOWN_LEFT);
         }
     }
 }

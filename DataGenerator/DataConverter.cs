@@ -1,11 +1,9 @@
 ﻿using System;
-using System.Diagnostics;
-using System.IO;
-using System.Threading;
+using System.Collections.Generic;
 
 namespace DataGenerator
 {
-    static class DataConverter
+    public static class DataConverter
     {
         /// <summary>
         /// Konwersja ciągu znaków, odpowiadająca ruchom z zakresu 1-7, 
@@ -40,23 +38,23 @@ namespace DataGenerator
             return board;
         }
 
-        public static Board[] DevideData(String data)
+        public static Board[] ParseData(String data)
         {
             data = data.Replace("\r\n", "\n");
             String[] lines = data.Split(Environment.NewLine.ToCharArray());
-            Board[] situations = new Board[lines.Length / 2];
-            for (int i = 0; i < situations.Length; i++)
+            List<Board> situations = new List<Board>();
+            for (int i = 0; i < lines.Length/2; i++)
             {
                 if (lines[i * 2 + 1].Length < 4)
                 {
                     Board b = new Board();
                     b.MakeMoves(DataConverter.StringToMoves(lines[i * 2]));
                     b.bestMove = lines[i * 2 + 1][0] - '0';
-                    situations[i] = b;
+                    situations.Add(b);
                 }
             }
 
-            return situations;
+            return situations.ToArray();
         }
 
     }

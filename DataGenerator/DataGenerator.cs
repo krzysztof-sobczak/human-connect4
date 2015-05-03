@@ -1,32 +1,54 @@
-﻿using System;
+﻿using CsvHelper;
+using System;
 using System.Collections.Generic;
-using System.Diagnostics;
 using System.IO;
-using System.Threading;
 
 namespace DataGenerator
 {
-    class DataGenerator
+    public class DataGenerator
     {
-        Board board;
+        private static List<string> contextColumns =
+            new List<string> { "frame1_context1","frame1_context2","frame1_context3",
+            "frame1_context4","frame1_context5","frame1_context6","frame1_context7",
+            "frame1_context8","frame1_context9","frame1_context10","frame1_context11",
+            "frame1_context12","frame1_context13","frame1_context14","frame1_context15",
+            "frame1_context16","frame1_context17","frame2_context1","frame2_context2",
+            "frame2_context3","frame2_context4","frame2_context5","frame2_context6",
+            "frame2_context7","frame2_context8","frame2_context9","frame2_context10",
+            "frame2_context11","frame2_context12","frame2_context13","frame2_context14",
+            "frame2_context15","frame2_context16","frame2_context17","frame3_context1",
+            "frame3_context2","frame3_context3","frame3_context4","frame3_context5",
+            "frame3_context6","frame3_context7","frame3_context8","frame3_context9",
+            "frame3_context10","frame3_context11","frame3_context12","frame3_context13",
+            "frame3_context14","frame3_context15","frame3_context16","frame3_context17",
+            "frame4_context1","frame4_context2","frame4_context3","frame4_context4",
+            "frame4_context5","frame4_context6","frame4_context7","frame4_context8",
+            "frame4_context9","frame4_context10","frame4_context11","frame4_context12",
+            "frame4_context13","frame4_context14","frame4_context15","frame4_context16",
+            "frame4_context17", "best_column" };
+
+        public Board board { get; set; }
 
         public DataGenerator(Board board)
         {
             this.board = board;
         }
 
-        public static String GenerateInputForVeleng1()
+        public static String GenerateEasyInputForVeleng()
         {
             String input = "";
             List<String> data = new List<String>();
             int len;
 
+            // generate first move
             for (int j = 1; j < 8; j++)
             {
                 data.Add(j.ToString());
             }
 
-            for (int k = 0; k < 2; k++)
+            // generate rest moves
+            // k = (k+2)-th move
+            for (int k = 0; k < 0; k++)
             {
                 len = data.Count;
                 for (int i = 0; i < len; i++)
@@ -45,75 +67,45 @@ namespace DataGenerator
             return input;
         }
 
-        static String[] DevideInput(String input, int threads)
+        public static String GenerateRandomInputForVeleng(int boardsCount)
         {
-            String[] inputs = new String[threads];
+            const int minMovesCount = 4;
+            const int maxMovesCount = 6 * 7 - 10;
 
-            int len = input.Length / threads;
-            int start = 0;
-            int end = len;
-            for (int i = 0; i < threads - 1; i++)
+            String input = "";
+            Random rand = new Random();
+
+            if (boardsCount < 1) boardsCount = rand.Next();
+
+            for (int i = 0; i < boardsCount; i++)
             {
-                while (input[end - 1] != '\n') end++;
-                inputs[i] = input.Substring(start, end - start);
-                start = end;
-                end += len;
-            }
-            inputs[threads - 1] = input.Substring(start, input.Length - start);
-
-            return inputs;
-        }
-        
-        public static String RunVelengParallel(String input, int threads)
-        {
-            String[] inputs = DevideInput(input, threads);
-            Thread[] worker = new Thread[threads];
-            String[] data = new String[threads];
-            //String data = "";
-
-            for (int i = 0; i < threads; i++)
-            {
-                worker[i] = new Thread((id) =>
+                int movesCount = minMovesCount + rand.Next(
+                    maxMovesCount - minMovesCount + 1
+                );
+                string move = "";
+                for (int j = 0; j < movesCount; j++)
                 {
-                    Thread.CurrentThread.IsBackground = true;
-
-                    Process p = new Process();
-                    p.StartInfo.FileName = "D:\\dawid\\studia\\msi2\\repo\\Veleng\\Debug\\Veleng.exe";
-                    p.StartInfo.CreateNoWindow = false;
-                    p.StartInfo.UseShellExecute = false;
-                    p.StartInfo.RedirectStandardInput = true;
-                    p.StartInfo.RedirectStandardOutput = true;
-                    p.StartInfo.WorkingDirectory = "D:\\dawid\\studia\\msi2\\repo\\Veleng\\Debug\\";
-                    p.Start();
-
-                    StreamWriter writer = p.StandardInput;
-                    writer.Write(inputs[(int)id]);
-                    writer.WriteLine("q");
-                    writer.Close();
-
-                    data[(int)id] = p.StandardOutput.ReadToEnd();
-                    p.WaitForExit();
-                });
-                worker[i].Start(i);
+                    move += (rand.Next(7) + 1).ToString();
+                }
+                input += move + '0' + Environment.NewLine;
             }
-
-            for (int i = 0; i < threads; i++)
-            {
-                worker[i].Join();
-            }
-
-            return String.Join("", data);
+            
+            return input;
         }
 
-        public void GenerateContexts()
+        public Context[][] GenerateContexts()
         {
+            Context[][] conts = new Context[Enum.GetValues(typeof(Board.FramePosition)).Length][];
+            int i = 0;
             foreach (Board.FramePosition frame in Enum.GetValues(typeof(Board.FramePosition)))
             {
-                GenerateContextsForFrame(frame);
+                conts[i++] = GenerateContextsForFrame(frame);
             }
+
+            return conts;
         }
 
-        public void GenerateContextsForFrame(Board.FramePosition frame)
+        public Context[] GenerateContextsForFrame(Board.FramePosition frame)
         {
             int[][][] contextsLines = GenerateContextsLinesParams();
             int[,] crossingLinePerField = new int[5, 4];
@@ -127,7 +119,7 @@ namespace DataGenerator
                 context.contextType = (Context.ContextType) contextsLines[contextsLineIndex][2][0];
 
                 // [F3]
-                context.row = contextsLines[contextsLineIndex][0][0];
+                context.row = contextsLines[contextsLineIndex][0][1];
 
                 // [F4]
                 context.deep = 0;
@@ -149,7 +141,8 @@ namespace DataGenerator
                     // [F4]
                     context.deep += NonNegative(
                         yInFrame - NonNegative(
-                            board.ColSize[xInFrame] - board.FrameToDelta[(int)frame][1]
+                            board.ColSize[xInFrame + board.FrameToDelta[(int)frame][0]] 
+                                - board.FrameToDelta[(int)frame][1]
                         ) + 1
                     );
 
@@ -210,7 +203,7 @@ namespace DataGenerator
                 contexts.Add(context);
             }
 
-            Context[] contextToResult = contexts.ToArray();
+            Context[] contextToReturn = contexts.ToArray();
 
             // [A3/2]
             // dla każdego pola w kontekście zliczamy 
@@ -222,14 +215,21 @@ namespace DataGenerator
 
                 for (int i = 0; i < 4; i++)
                 {
-                    contextToResult[contextsLineIndex].crossingOpenedLines 
+                    contextToReturn[contextsLineIndex].crossingOpenedLines 
                         += crossingLinePerField[xInFrame, yInFrame];
+
+                    /*if (IfItsGoodContext(contextToReturn[contextsLineIndex]))
+                    {
+                        contextToReturn[contextsLineIndex].crossingOpenedLines -= 4;
+                    }*/
 
                     // upgrade position
                     xInFrame = xInFrame + contextsLines[contextsLineIndex][1][0];
                     yInFrame = yInFrame + contextsLines[contextsLineIndex][1][1];
                 }
             }
+
+            return contextToReturn;
         }
 
         private bool IfItsGoodContext(Context context)
@@ -304,6 +304,44 @@ namespace DataGenerator
         {
             if (x > 0) return x;
             else return 0;
+        }
+
+        public static void GenerateData(String path, String input, int threadsCount)
+        {
+            //Console.WriteLine(input);
+
+            String boardsS = VelengHelper.RunVelengParallel(input, threadsCount);
+            Board[] boards = DataConverter.ParseData(boardsS);
+
+            using (var stream = new StreamWriter(path))
+            {
+                using (var writer = new CsvWriter(stream))
+                {
+                    // column name
+                    foreach (var contName in contextColumns)
+                    {
+                        writer.WriteField(contName);
+                    }
+                    writer.NextRecord();
+
+                    // data
+                    for (int boardsIndex = 0; boardsIndex < boards.Length; boardsIndex++)
+                    {
+                        DataGenerator gen = new DataGenerator(boards[boardsIndex]);
+                        Context[][] conts = gen.GenerateContexts();
+
+                        for (int i = 0; i < conts.Length; i++)
+                        {
+                            for (int j = 0; j < conts[i].Length; j++)
+                            {
+                                writer.WriteField(conts[i][j].ToString(), true);
+                            }
+                        }
+                        writer.WriteField(gen.board.bestMove);
+                        writer.NextRecord();
+                    }
+                }
+            }
         }
 
     }

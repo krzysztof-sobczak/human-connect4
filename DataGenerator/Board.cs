@@ -1,12 +1,8 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace DataGenerator
 {
-    class Board
+    public class Board
     {
         DiskColor[,] _board;
         int[] _colSize;
