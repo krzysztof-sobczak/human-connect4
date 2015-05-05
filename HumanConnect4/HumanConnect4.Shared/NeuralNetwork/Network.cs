@@ -13,7 +13,7 @@ namespace HumanConnect4.NeuralNetwork
     {
         private const float LEARNING_RATE = 1;
         private const float MOMENTUM = 0;
-        private const int TRAIN_ITERATIONS = 200;
+        private const int TRAIN_ITERATIONS = 2000;
 
         private InputLayer inputLayer;
 

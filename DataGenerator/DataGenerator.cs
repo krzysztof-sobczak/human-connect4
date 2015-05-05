@@ -34,31 +34,38 @@ namespace DataGenerator
             this.board = board;
         }
 
-        public static String GenerateEasyInputForVeleng()
+        public static String GenerateEasyInputForVeleng(int dataSize)
         {
             String input = "";
             List<String> data = new List<String>();
+            List<String> prevlastLevel = new List<String>();
+            List<String> lastLevel = new List<String>();
             int len;
 
             // generate first move
             for (int j = 1; j < 8; j++)
             {
-                data.Add(j.ToString());
+                lastLevel.Add(j.ToString());
             }
 
+            dataSize -= 1;
             // generate rest moves
-            // k = (k+2)-th move
-            for (int k = 0; k < 0; k++)
+            // k = k-th move
+            for (int k = 0; k < dataSize; k++)
             {
-                len = data.Count;
-                for (int i = 0; i < len; i++)
+                data.AddRange(prevlastLevel);
+                prevlastLevel = lastLevel;
+                lastLevel = new List<string>();
+                foreach(var item in prevlastLevel)
                 {
                     for (int j = 1; j < 8; j++)
                     {
-                        data.Add(data[i] + j.ToString());
+                        lastLevel.Add(item + j.ToString());
                     }
                 }
             }
+            data.AddRange(prevlastLevel);
+            data.AddRange(lastLevel);
 
             foreach (String item in data)
             {
@@ -69,8 +76,9 @@ namespace DataGenerator
 
         public static String GenerateRandomInputForVeleng(int boardsCount)
         {
-            const int minMovesCount = 4;
-            const int maxMovesCount = 6 * 7 - 10;
+            const int minMovesCount = 6;
+            //const int maxMovesCount = 6 * 7 - 10;
+            const int maxMovesCount = 12;
 
             String input = "";
             Random rand = new Random();
