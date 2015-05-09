@@ -21,11 +21,13 @@
     <Compile Include="$(MSBuildThisFileDirectory)Connect4\NeuralNetwork.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Connect4\TestSetFactory.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Connect4\TestSets\AbstractTestSet.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Connect4\TestSets\VelenaCsvSeries.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Connect4\TestSets\VelenaCsv.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Connect4\TrainingSetFactory.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Connect4\TrainingSets\AbstractTrainingSet.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Connect4\TrainingSets\TrainingSetCsvMap.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Connect4\TrainingSets\TrainingSetCsv.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Connect4\TrainingSets\VelenaCsvSeries.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Connect4\TrainingSets\VelenaCsv.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Connect4\TrainingSets\Sample.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)NeuralNetwork\AbstractTestSet.cs" />
@@ -54,6 +56,50 @@
   </ItemGroup>
   <ItemGroup>
     <Content Include="$(MSBuildThisFileDirectory)Resources\velena_sample.csv">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="$(MSBuildThisFileDirectory)Resources\learn\data.csv">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="$(MSBuildThisFileDirectory)Resources\learn\data10.csv" />
+    <Content Include="$(MSBuildThisFileDirectory)Resources\learn\data2.csv" />
+    <Content Include="$(MSBuildThisFileDirectory)Resources\learn\data4.csv" />
+    <Content Include="$(MSBuildThisFileDirectory)Resources\learn\data5.csv" />
+    <Content Include="$(MSBuildThisFileDirectory)Resources\learn\data_moves_13_20__v1.csv" />
+    <Content Include="$(MSBuildThisFileDirectory)Resources\learn\data_moves_13_20__v10.csv" />
+    <Content Include="$(MSBuildThisFileDirectory)Resources\learn\data_moves_13_20__v2.csv" />
+    <Content Include="$(MSBuildThisFileDirectory)Resources\learn\data_moves_13_20__v4.csv" />
+    <Content Include="$(MSBuildThisFileDirectory)Resources\learn\data_moves_13_20__v5.csv" />
+    <Content Include="$(MSBuildThisFileDirectory)Resources\learn\data_moves_13_20__v6.csv" />
+    <Content Include="$(MSBuildThisFileDirectory)Resources\learn\data_moves_13_20__v7.csv" />
+    <Content Include="$(MSBuildThisFileDirectory)Resources\learn\data_moves_13_20__v8.csv" />
+    <Content Include="$(MSBuildThisFileDirectory)Resources\learn\data_moves_13_20__v9.csv" />
+    <Content Include="$(MSBuildThisFileDirectory)Resources\learn\data_moves_21_25__v1.csv" />
+    <Content Include="$(MSBuildThisFileDirectory)Resources\learn\data_moves_21_25__v10.csv" />
+    <Content Include="$(MSBuildThisFileDirectory)Resources\learn\data_moves_21_25__v2.csv" />
+    <Content Include="$(MSBuildThisFileDirectory)Resources\learn\data_moves_21_25__v3.csv" />
+    <Content Include="$(MSBuildThisFileDirectory)Resources\learn\data_moves_21_25__v4.csv" />
+    <Content Include="$(MSBuildThisFileDirectory)Resources\learn\data_moves_21_25__v6.csv" />
+    <Content Include="$(MSBuildThisFileDirectory)Resources\learn\data_moves_21_25__v7.csv" />
+    <Content Include="$(MSBuildThisFileDirectory)Resources\learn\data_moves_21_25__v8.csv">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="$(MSBuildThisFileDirectory)Resources\learn\data_moves_21_25__v9.csv" />
+    <Content Include="$(MSBuildThisFileDirectory)Resources\learn\data_moves_6_12__v1.csv" />
+    <Content Include="$(MSBuildThisFileDirectory)Resources\learn\data_moves_6_12__v2.csv" />
+    <Content Include="$(MSBuildThisFileDirectory)Resources\learn\data_moves_6_12__v3.csv" />
+    <Content Include="$(MSBuildThisFileDirectory)Resources\learn\data_moves_6_12__v4.csv" />
+    <Content Include="$(MSBuildThisFileDirectory)Resources\learn\data_moves_6_12__v5.csv" />
+    <Content Include="$(MSBuildThisFileDirectory)Resources\learn\data_moves_6_12__v6.csv" />
+    <Content Include="$(MSBuildThisFileDirectory)Resources\learn\data_moves_6_12__v8.csv" />
+    <None Include="$(MSBuildThisFileDirectory)Resources\test\data3.csv" />
+    <None Include="$(MSBuildThisFileDirectory)Resources\test\data_moves_13_20__v3.csv">
+      <CopyToOutputDirectory>Never</CopyToOutputDirectory>
+    </None>
+    <None Include="$(MSBuildThisFileDirectory)Resources\test\data_moves_21_25__v5.csv" />
+    <Content Include="$(MSBuildThisFileDirectory)Resources\test\data_moves_6_12__v7.csv">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
   </ItemGroup>

@@ -1,0 +1,186 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="12.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProjectGuid>{181868EA-EE33-4D39-9957-EC2A2BA9F0C1}</ProjectGuid>
+    <OutputType>WinExe</OutputType>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <RootNamespace>Win7Connect4</RootNamespace>
+    <AssemblyName>Win7Connect4</AssemblyName>
+    <TargetFrameworkVersion>v4.5</TargetFrameworkVersion>
+    <FileAlignment>512</FileAlignment>
+    <ProjectTypeGuids>{60dc8134-eba5-43b8-bcc9-bb4bc16c2548};{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}</ProjectTypeGuids>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <PlatformTarget>AnyCPU</PlatformTarget>
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>bin\Debug\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <PlatformTarget>AnyCPU</PlatformTarget>
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>bin\Release\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="CsvHelper">
+      <HintPath>..\packages\CsvHelper.2.13.0.0\lib\net40-client\CsvHelper.dll</HintPath>
+    </Reference>
+    <Reference Include="System" />
+    <Reference Include="System.Data" />
+    <Reference Include="System.Xml" />
+    <Reference Include="Microsoft.CSharp" />
+    <Reference Include="System.Core" />
+    <Reference Include="System.Xml.Linq" />
+    <Reference Include="System.Data.DataSetExtensions" />
+    <Reference Include="System.Xaml">
+      <RequiredTargetFramework>4.0</RequiredTargetFramework>
+    </Reference>
+    <Reference Include="WindowsBase" />
+    <Reference Include="PresentationCore" />
+    <Reference Include="PresentationFramework" />
+  </ItemGroup>
+  <ItemGroup>
+    <ApplicationDefinition Include="App.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </ApplicationDefinition>
+    <Compile Include="Random.cs" />
+    <Page Include="MainWindow.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Compile Include="App.xaml.cs">
+      <DependentUpon>App.xaml</DependentUpon>
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="AsyncHelpers.cs" />
+    <Compile Include="Connect4\AI.cs" />
+    <Compile Include="Connect4\ExtendedContext.cs" />
+    <Compile Include="Connect4\NeuralNetwork.cs" />
+    <Compile Include="Connect4\TestSetFactory.cs" />
+    <Compile Include="Connect4\TestSets\AbstractTestSet.cs" />
+    <Compile Include="Connect4\TrainingSets\VelenaCsv.cs" />
+    <Compile Include="Connect4\TrainingSets\VelenaCsvSeries.cs" />
+    <Compile Include="Connect4\TrainingSetFactory.cs" />
+    <Compile Include="Connect4\TrainingSets\AbstractTrainingSet.cs" />
+    <Compile Include="Connect4\TrainingSets\Sample.cs" />
+    <Compile Include="Connect4\TrainingSets\TrainingSetCsv.cs" />
+    <Compile Include="Connect4\TrainingSets\TrainingSetCsvMap.cs" />
+    <Compile Include="Connect4\TestSets\VelenaCsv.cs" />
+    <Compile Include="Connect4\TestSets\VelenaCsvSeries.cs" />
+    <Compile Include="MainWindow.xaml.cs">
+      <DependentUpon>MainWindow.xaml</DependentUpon>
+      <SubType>Code</SubType>
+    </Compile>
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="NeuralNetwork\AbstractTestSet.cs" />
+    <Compile Include="NeuralNetwork\AbstractTrainingSet.cs" />
+    <Compile Include="NeuralNetwork\ActivationFunction.cs" />
+    <Compile Include="NeuralNetwork\Edge.cs" />
+    <Compile Include="NeuralNetwork\Layers\AbstractHiddenLayer.cs" />
+    <Compile Include="NeuralNetwork\Layers\ConvolutionLayer.cs" />
+    <Compile Include="NeuralNetwork\Layers\InputLayer.cs" />
+    <Compile Include="NeuralNetwork\Layers\Layer.cs" />
+    <Compile Include="NeuralNetwork\Layers\OutputLayer.cs" />
+    <Compile Include="NeuralNetwork\Network.cs" />
+    <Compile Include="NeuralNetwork\Neurons\AbstractNeuron.cs" />
+    <Compile Include="NeuralNetwork\Neurons\Neuron.cs" />
+    <Compile Include="NeuralNetwork\Neurons\PassiveNeuron.cs" />
+    <Compile Include="Properties\AssemblyInfo.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Properties\Resources.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>Resources.resx</DependentUpon>
+    </Compile>
+    <Compile Include="Properties\Settings.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DependentUpon>Settings.settings</DependentUpon>
+      <DesignTimeSharedInput>True</DesignTimeSharedInput>
+    </Compile>
+    <EmbeddedResource Include="Properties\Resources.resx">
+      <Generator>ResXFileCodeGenerator</Generator>
+      <LastGenOutput>Resources.Designer.cs</LastGenOutput>
+    </EmbeddedResource>
+    <None Include="packages.config" />
+    <None Include="Properties\Settings.settings">
+      <Generator>SettingsSingleFileGenerator</Generator>
+      <LastGenOutput>Settings.Designer.cs</LastGenOutput>
+    </None>
+    <AppDesigner Include="Properties\" />
+    <Content Include="Resources\learn\data.csv">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Resources\learn\data_moves_13_20__v1.csv" />
+    <Content Include="Resources\learn\data_moves_13_20__v10.csv" />
+    <Content Include="Resources\learn\data_moves_13_20__v2.csv" />
+    <Content Include="Resources\learn\data_moves_13_20__v4.csv" />
+    <Content Include="Resources\learn\data_moves_13_20__v5.csv" />
+    <Content Include="Resources\learn\data_moves_13_20__v6.csv" />
+    <Content Include="Resources\learn\data_moves_13_20__v7.csv" />
+    <Content Include="Resources\learn\data_moves_13_20__v8.csv" />
+    <Content Include="Resources\learn\data_moves_13_20__v9.csv" />
+    <Content Include="Resources\learn\data_moves_21_25__v1.csv" />
+    <Content Include="Resources\learn\data_moves_21_25__v10.csv" />
+    <Content Include="Resources\learn\data_moves_21_25__v2.csv" />
+    <Content Include="Resources\learn\data_moves_21_25__v3.csv" />
+    <Content Include="Resources\learn\data_moves_21_25__v4.csv" />
+    <Content Include="Resources\learn\data_moves_21_25__v6.csv" />
+    <Content Include="Resources\learn\data_moves_21_25__v7.csv" />
+    <Content Include="Resources\learn\data_moves_21_25__v8.csv">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Resources\learn\data_moves_21_25__v9.csv" />
+    <Content Include="Resources\learn\data_moves_6_12__v1.csv" />
+    <Content Include="Resources\learn\data_moves_6_12__v2.csv" />
+    <Content Include="Resources\learn\data_moves_6_12__v3.csv" />
+    <Content Include="Resources\learn\data_moves_6_12__v4.csv" />
+    <Content Include="Resources\learn\data_moves_6_12__v5.csv" />
+    <Content Include="Resources\learn\data_moves_6_12__v6.csv" />
+    <Content Include="Resources\learn\data_moves_6_12__v8.csv" />
+    <Content Include="Resources\learn\data10.csv" />
+    <Content Include="Resources\learn\data2.csv" />
+    <Content Include="Resources\learn\data4.csv" />
+    <Content Include="Resources\learn\data5.csv" />
+    <None Include="Resources\test\data3.csv" />
+    <None Include="Resources\test\data_moves_13_20__v3.csv" />
+    <None Include="Resources\test\data_moves_21_25__v5.csv" />
+    <Content Include="Resources\test\data_moves_6_12__v7.csv">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Resources\velena_learn.csv">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Resources\velena_sample.csv">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Resources\velena_test.csv">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="App.config" />
+  </ItemGroup>
+  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+  <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
+       Other similar extension points exist, see Microsoft.Common.targets.
+  <Target Name="BeforeBuild">
+  </Target>
+  <Target Name="AfterBuild">
+  </Target>
+  -->
+</Project>

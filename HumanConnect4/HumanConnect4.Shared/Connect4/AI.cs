@@ -22,10 +22,10 @@ namespace HumanConnect4.Connect4
         {
             this.NeuralNetwork = new NeuralNetwork();
 
-            AbstractTrainingSet trainingSet = TrainingSetFactory.Create<TrainingSets.VelenaCsv>();
+            AbstractTrainingSet trainingSet = TrainingSetFactory.Create<TrainingSets.VelenaCsvSeries>();
             NeuralNetwork.train(trainingSet);
 
-            AbstractTestSet testSet = TestSetFactory.Create<TestSets.VelenaCsv>();
+            AbstractTestSet testSet = TestSetFactory.Create<TestSets.VelenaCsvSeries>();
             NeuralNetwork.test(testSet);
         }
 
