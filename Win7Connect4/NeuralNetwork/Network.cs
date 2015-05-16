@@ -3,6 +3,7 @@ using HumanConnect4.NeuralNetwork.Neurons;
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
+using System.IO;
 using System.Text;
 using System.Xml;
 using System.Xml.Serialization;
@@ -52,6 +53,13 @@ namespace HumanConnect4.NeuralNetwork
             HiddenLayers = new List<AbstractHiddenLayer>();
         }
 
+        public static Network fromXml(string filepath)
+        {
+            System.Xml.Serialization.XmlSerializer serializer = new System.Xml.Serialization.XmlSerializer(typeof(Network), new Type[] { typeof(Network), typeof(OutputLayer), typeof(InputLayer), typeof(PassiveNeuron), typeof(Neuron), typeof(Edge), typeof(Layer), typeof(ConvolutionLayer) });
+            var streamRead = new FileStream(filepath, FileMode.Open);
+            return (Network)serializer.Deserialize(streamRead);
+        }
+
         public void train(AbstractTrainingSet trainingSet)
         {
             GlobalError = new List<float>();
@@ -95,16 +103,10 @@ namespace HumanConnect4.NeuralNetwork
 
             foreach(AbstractHiddenLayer hiddenLayer in HiddenLayers)
             {
-                foreach(Neuron neuron in hiddenLayer.getNeurons())
-                {
-                    neuron.calculateOutput();
-                }
+                hiddenLayer.calculateOutput();
             }
 
-            foreach (Neuron neuron in OutputLayer.Neurons)
-            {
-                neuron.calculateOutput();
-            }
+            OutputLayer.calculateOutput();
         }
 
         private void calculateDeltas(OutputLayer outputLayer)
@@ -141,6 +143,10 @@ namespace HumanConnect4.NeuralNetwork
 
             foreach (AbstractHiddenLayer hiddenLayer in HiddenLayers)
             {
+                if (hiddenLayer.IsFrozen)
+                {
+                    continue;
+                }
                 foreach (Neuron neuron in hiddenLayer.getNeurons())
                 {
                     foreach(Edge edge in neuron.Edges)
@@ -172,6 +178,14 @@ namespace HumanConnect4.NeuralNetwork
                 sum += (float)Math.Pow(neuron.Error, 2);
             }
             return sum / outputLayer.Neurons.Count;
+        }
+
+        virtual public void saveToXml(string filepath)
+        {
+            System.Xml.Serialization.XmlSerializer serializer = new System.Xml.Serialization.XmlSerializer(typeof(Network), new Type[] { typeof(Network), typeof(OutputLayer), typeof(InputLayer), typeof(PassiveNeuron), typeof(Neuron), typeof(Edge), typeof(Layer), typeof(ConvolutionLayer) });
+            var streamWrite = new FileStream(filepath, FileMode.Create);
+            serializer.Serialize(streamWrite, this);
+            streamWrite.Close();
         }
 
     }

@@ -7,6 +7,10 @@ namespace HumanConnect4.NeuralNetwork.Layers
 {
     public class OutputLayer : Layer
     {
+        public OutputLayer()
+        {
+
+        }
         public OutputLayer(int size) : base(size) { }
         public OutputLayer(List<float> values)
         {
