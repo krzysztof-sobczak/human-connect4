@@ -34,13 +34,13 @@ namespace DataGenerator
             this.board = board;
         }
 
-        public static String GenerateEasyInputForVeleng(int dataSize)
+        public static String[] GenerateEasyInputForVeleng(int dataSize)
         {
-            String input = "";
+            //String input = "";
             List<String> data = new List<String>();
             List<String> prevlastLevel = new List<String>();
             List<String> lastLevel = new List<String>();
-            int len;
+            //int len;
 
             // generate first move
             for (int j = 1; j < 8; j++)
@@ -67,23 +67,25 @@ namespace DataGenerator
             data.AddRange(prevlastLevel);
             data.AddRange(lastLevel);
 
-            foreach (String item in data)
-            {
-                input += item + '0' + Environment.NewLine;
-            }
-            return input;
+            for (int i = 0; i < data.Count; i++)
+			{
+                data[i] += "0";
+			}
+
+            return data.ToArray();
         }
 
-        public static String GenerateRandomInputForVeleng(int boardsCount)
+        public static String[] GenerateRandomInputForVeleng(int boardsCount)
         {
             const int minMovesCount = 6;
             //const int maxMovesCount = 6 * 7 - 10;
             const int maxMovesCount = 12;
 
-            String input = "";
+            int len = 0;
             Random rand = new Random();
 
             if (boardsCount < 1) boardsCount = rand.Next();
+            String[] input = new string[boardsCount];
 
             for (int i = 0; i < boardsCount; i++)
             {
@@ -95,7 +97,7 @@ namespace DataGenerator
                 {
                     move += (rand.Next(7) + 1).ToString();
                 }
-                input += move + '0' + Environment.NewLine;
+                input[++len] = move + '0' + Environment.NewLine;
             }
             
             return input;
@@ -314,7 +316,7 @@ namespace DataGenerator
             else return 0;
         }
 
-        public static void GenerateData(String path, String input, int threadsCount)
+        public static void GenerateData(String path, String[] input, int threadsCount)
         {
             //Console.WriteLine(input);
 

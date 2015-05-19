@@ -24,8 +24,19 @@ namespace Win7Connect4
         public MainWindow()
         {
             InitializeComponent();
-            AI AI = new AI();
             //AI.getMove();
+        }
+
+        private void Button_Click(object sender, RoutedEventArgs e)
+        {
+            AI AI = new AI();
+            string globalErrorLog = "";
+            foreach(float error in AI.NeuralNetwork.GlobalError)
+            {
+                globalErrorLog += "global error: " + error.ToString() + "\n";
+            }
+            textBox.Text = globalErrorLog;
+
         }
     }
 }

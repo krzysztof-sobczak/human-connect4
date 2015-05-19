@@ -6,6 +6,7 @@ using System.Diagnostics;
 using System.Text;
 using System.Xml;
 using System.Xml.Serialization;
+using Win7Connect4;
 
 namespace HumanConnect4.NeuralNetwork
 {
@@ -70,6 +71,8 @@ namespace HumanConnect4.NeuralNetwork
                 }
                 float globalError = errorSum / trainInstancesCount;
                 GlobalError.Add(globalError);
+                
+                textBox.AppendText(String.Format("GlobalError: {0}", globalError));
                 Debug.WriteLine(String.Format("GlobalError: {0}", globalError));
             }
         }

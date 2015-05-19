@@ -17,7 +17,7 @@ namespace HumanConnect4.Connect4
 
         private NeuralNetwork neuralNetwork;
 
-        private NeuralNetwork NeuralNetwork
+        public NeuralNetwork NeuralNetwork
         {
             get { return neuralNetwork; }
             set { neuralNetwork = value; }
