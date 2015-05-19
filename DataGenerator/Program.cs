@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Diagnostics;
 using System.IO;
+using System.Threading;
 
 namespace DataGenerator
 {
@@ -9,8 +10,9 @@ namespace DataGenerator
         static void Main(string[] args)
         {
             int testNumber = 0;
-            string filename = "data9.csv";
-            int dataSize = 4;
+            string filename = "data__1_3";
+            string extension = ".csv";
+            int dataSize = 3;
             int threads = 8;
 
             if (args.Length >= 1)
@@ -37,26 +39,51 @@ namespace DataGenerator
                     System.Reflection.Assembly.GetExecutingAssembly().GetName().CodeBase)
                 )).Substring(6) + "\\";
 
-            string input = "";
+            string[] input;
             switch (testNumber)
             {
                 case 0:
                     input = DataGenerator.GenerateEasyInputForVeleng(dataSize);
                     Console.WriteLine("Gererating " + dataSize + " moves on "
-                        + threads + " threads and save to '" + filename + "'...");
+                        + threads + "x2 threads and save to '" + filename + "_*" + extension + "'...");
                     break;
                 case 1:
                     input = DataGenerator.GenerateRandomInputForVeleng(dataSize);
                     Console.WriteLine("Gererating " + dataSize + " random records on "
-                        + threads + " threads and save to '" + filename + "'...");
+                        + threads + "x2 threads and save to '" + filename + "_*" + extension + "'...");
                     break;
                 default:
                     input = DataGenerator.GenerateRandomInputForVeleng(dataSize);
                     break;
             }
 
+            // input - 1 data per line
+            input = DataConverter.Shuffle(input);
+            String[][] inputs = DataConverter.DevideInput(input, 2);
+            //// input - 1 input data for thread per line
+
+            String[] input4test = inputs[0];
+            String[] input4learn = inputs[1];
+            Thread worker4test, worker4learn;
+
             var watch = Stopwatch.StartNew();
-            DataGenerator.GenerateData(path + filename, input, threads);
+
+            worker4test = new Thread(() =>
+            {
+                //Thread.CurrentThread.IsBackground = true;
+                DataGenerator.GenerateData(path + filename + "_test" + extension, input4test, threads);
+            });
+            worker4test.Start();
+
+            worker4learn = new Thread(() =>
+            {
+                //Thread.CurrentThread.IsBackground = true;
+                DataGenerator.GenerateData(path + filename + "_learn" + extension, input4learn, threads);
+            });
+            worker4learn.Start();
+
+            worker4test.Join();
+            worker4learn.Join();
 
             watch.Stop();
             var elapsedMs = watch.ElapsedMilliseconds;

@@ -57,5 +57,49 @@ namespace DataGenerator
             return situations.ToArray();
         }
 
+        public static String[][] DevideInput(String[] input, int threads)
+        {
+            String[][] inputs = new String[threads][];
+
+            int len = input.Length / threads;
+            for (int i = 0; i < threads - 1; i++)
+            {
+                inputs[i] = new String[len];
+                Array.Copy(input, i * len, inputs[i], 0, len);
+            }
+            inputs[threads - 1] = new String[input.Length - len * (threads - 1)];
+            Array.Copy(input, (threads - 1) * len, inputs[threads - 1], 0, 
+                input.Length - len * (threads - 1));
+
+            return inputs;
+        }
+
+        public static String[] DoubleArrayToArraySplitsByNewLine(String[][] data)
+        {
+            String[] ret = new String[data.GetLength(0)];
+            
+            for (int i = 0; i < data.GetLength(0); i++)
+            {
+                ret[i] = String.Join(Environment.NewLine, data[i]);
+            }
+
+            return ret;
+        }
+
+        public static String[] Shuffle(String[] input)
+        {
+            Random rand = new Random();
+            String[] shuffled = new String[input.Length];
+
+            for (int i = 0; i < input.Length; i++)
+            {
+                int r = rand.Next(input.Length);
+                while (shuffled[r] != null) r = (r + 1) % input.Length;
+                shuffled[r] = input[i];
+            }
+
+            return shuffled;
+        }
+
     }
 }

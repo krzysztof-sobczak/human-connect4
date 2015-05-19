@@ -22,7 +22,7 @@ namespace HumanConnect4.Connect4.TrainingSets
 
         private async Task getFromVelenaCsv()
         {
-            DirectoryInfo dirInfo = new DirectoryInfo(@"Resources\learn");
+            DirectoryInfo dirInfo = new DirectoryInfo(@"D:\dawid\studia\msi2\repo\Win7Connect4\Resources\learn");
 
             FileInfo[] info = dirInfo.GetFiles("*.*");
             int counter = 0;

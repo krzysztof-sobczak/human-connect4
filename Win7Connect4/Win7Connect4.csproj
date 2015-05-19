@@ -123,46 +123,6 @@
       <LastGenOutput>Settings.Designer.cs</LastGenOutput>
     </None>
     <AppDesigner Include="Properties\" />
-    <Content Include="Resources\learn\data.csv">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </Content>
-    <Content Include="Resources\learn\data_moves_13_20__v1.csv" />
-    <Content Include="Resources\learn\data_moves_13_20__v10.csv" />
-    <Content Include="Resources\learn\data_moves_13_20__v2.csv" />
-    <Content Include="Resources\learn\data_moves_13_20__v4.csv" />
-    <Content Include="Resources\learn\data_moves_13_20__v5.csv" />
-    <Content Include="Resources\learn\data_moves_13_20__v6.csv" />
-    <Content Include="Resources\learn\data_moves_13_20__v7.csv" />
-    <Content Include="Resources\learn\data_moves_13_20__v8.csv" />
-    <Content Include="Resources\learn\data_moves_13_20__v9.csv" />
-    <Content Include="Resources\learn\data_moves_21_25__v1.csv" />
-    <Content Include="Resources\learn\data_moves_21_25__v10.csv" />
-    <Content Include="Resources\learn\data_moves_21_25__v2.csv" />
-    <Content Include="Resources\learn\data_moves_21_25__v3.csv" />
-    <Content Include="Resources\learn\data_moves_21_25__v4.csv" />
-    <Content Include="Resources\learn\data_moves_21_25__v6.csv" />
-    <Content Include="Resources\learn\data_moves_21_25__v7.csv" />
-    <Content Include="Resources\learn\data_moves_21_25__v8.csv">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </Content>
-    <Content Include="Resources\learn\data_moves_21_25__v9.csv" />
-    <Content Include="Resources\learn\data_moves_6_12__v1.csv" />
-    <Content Include="Resources\learn\data_moves_6_12__v2.csv" />
-    <Content Include="Resources\learn\data_moves_6_12__v3.csv" />
-    <Content Include="Resources\learn\data_moves_6_12__v4.csv" />
-    <Content Include="Resources\learn\data_moves_6_12__v5.csv" />
-    <Content Include="Resources\learn\data_moves_6_12__v6.csv" />
-    <Content Include="Resources\learn\data_moves_6_12__v8.csv" />
-    <Content Include="Resources\learn\data10.csv" />
-    <Content Include="Resources\learn\data2.csv" />
-    <Content Include="Resources\learn\data4.csv" />
-    <Content Include="Resources\learn\data5.csv" />
-    <None Include="Resources\test\data3.csv" />
-    <None Include="Resources\test\data_moves_13_20__v3.csv" />
-    <None Include="Resources\test\data_moves_21_25__v5.csv" />
-    <Content Include="Resources\test\data_moves_6_12__v7.csv">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </Content>
     <Content Include="Resources\velena_learn.csv">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
@@ -172,10 +132,13 @@
     <Content Include="Resources\velena_test.csv">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
+    <None Include="Resources\learn\data__1_5.csv" />
+    <None Include="Resources\test\data__1_5.csv" />
   </ItemGroup>
   <ItemGroup>
     <None Include="App.config" />
   </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.

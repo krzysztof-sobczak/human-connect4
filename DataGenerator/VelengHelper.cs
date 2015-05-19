@@ -7,25 +7,6 @@ namespace DataGenerator
 {
     static class VelengHelper
     {
-        static String[] DevideInput(String input, int threads)
-        {
-            String[] inputs = new String[threads];
-
-            int len = input.Length / threads;
-            int start = 0;
-            int end = len;
-            for (int i = 0; i < threads - 1; i++)
-            {
-                while (input[end - 1] != '\n') end++;
-                inputs[i] = input.Substring(start, end - start);
-                start = end;
-                end += len;
-            }
-            inputs[threads - 1] = input.Substring(start, input.Length - start);
-
-            return inputs;
-        }
-
         static String GetVelengWorkingDirectory()
         {
             var path = Path.GetDirectoryName(
@@ -40,9 +21,11 @@ namespace DataGenerator
             return path.Substring(6) + "\\Veleng\\Release\\";
         }
 
-        public static String RunVelengParallel(String input, int threads)
+        public static String RunVelengParallel(String[] input, int threads)
         {
-            String[] inputs = DevideInput(input, threads);
+            String[] inputs = DataConverter.DoubleArrayToArraySplitsByNewLine(
+                DataConverter.DevideInput(input, threads)
+            );
             Thread[] worker = new Thread[threads];
             String[] data = new String[threads];
 
@@ -62,7 +45,8 @@ namespace DataGenerator
                     p.Start();
 
                     StreamWriter writer = p.StandardInput;
-                    writer.Write(inputs[(int)id] + "q" + Environment.NewLine);
+                    writer.Write(inputs[(int)id] +
+                        Environment.NewLine +"q" + Environment.NewLine);
                     writer.Close();
 
                     data[(int)id] = p.StandardOutput.ReadToEnd();
