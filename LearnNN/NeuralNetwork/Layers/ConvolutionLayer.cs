@@ -94,5 +94,13 @@ namespace HumanConnect4.NeuralNetwork.Layers
                 }
             }
         }
+
+        public override void calculateOutput()
+        {
+            foreach (Neuron neuron in this.getNeurons())
+            {
+                neuron.calculateOutput();
+            }
+        }
     }
 }

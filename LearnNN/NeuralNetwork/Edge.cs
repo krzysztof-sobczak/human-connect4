@@ -23,6 +23,11 @@ namespace HumanConnect4.NeuralNetwork
             set { input = value; }
         }
 
+        public Edge()
+        {
+
+        }
+
         public Edge(float weight, AbstractNeuron input)
         {
             this.weight = weight;
@@ -34,6 +39,17 @@ namespace HumanConnect4.NeuralNetwork
             foreach(Neuron targetNeuron in targetNeurons)
             {
                 foreach(AbstractNeuron sourceNeuron in sourceNeurons)
+                {
+                    targetNeuron.Edges.Add(new Edge(Random.BipolarFloat(), sourceNeuron));
+                }
+            }
+        }
+
+        public static void connectAllNeurons(List<Neuron> targetNeurons, List<Neuron> sourceNeurons)
+        {
+            foreach (Neuron targetNeuron in targetNeurons)
+            {
+                foreach (Neuron sourceNeuron in sourceNeurons)
                 {
                     targetNeuron.Edges.Add(new Edge(Random.BipolarFloat(), sourceNeuron));
                 }

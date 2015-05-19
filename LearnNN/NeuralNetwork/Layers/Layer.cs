@@ -44,5 +44,13 @@ namespace HumanConnect4.NeuralNetwork.Layers
             return new Layer(neurons);
         }
 
+        public void calculateOutput()
+        {
+            foreach (Neuron neuron in this.Neurons)
+            {
+                neuron.calculateOutput();
+            }
+        }
+
     }
 }

@@ -4,6 +4,7 @@ using HumanConnect4.NeuralNetwork.Neurons;
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
+using System.IO;
 using System.Text;
 
 namespace HumanConnect4.Connect4
@@ -22,16 +23,28 @@ namespace HumanConnect4.Connect4
         {
             this.InputLayer = getInputLayer();
 
-            ConvolutionLayer detectorsLayer = getDetectorsLayer(this.InputLayer);
-            this.HiddenLayers.Add(detectorsLayer);
+            NetworksLayer networksLayer = getNetworksLayer(this.InputLayer);
 
-            ConvolutionLayer secondHiddenLayer = getSecondHiddenLayer(detectorsLayer);
-            this.HiddenLayers.Add(secondHiddenLayer);
-
-            this.OutputLayer = getOutputLayer(secondHiddenLayer);
+            this.OutputLayer = getOutputLayer(networksLayer);
         }
 
-        public void test(AbstractTestSet testSet)
+        public NeuralNetwork(Network networkFrom1To6, Network networkFrom7To12, Network networkFrom13To18, Network networkFrom19To24)
+        {
+            this.InputLayer = getInputLayer();
+
+            NetworksLayer networksLayer = getNetworksLayer(new Network[] { networkFrom1To6, networkFrom7To12, networkFrom13To18, networkFrom19To24 }, this.InputLayer);
+
+            this.OutputLayer = getOutputLayer(networksLayer);
+        }
+
+        public static NeuralNetwork fromXml(string filepath)
+        {
+            System.Xml.Serialization.XmlSerializer serializer = new System.Xml.Serialization.XmlSerializer(typeof(NeuralNetwork), new Type[] { typeof(Network), typeof(OutputLayer), typeof(InputLayer), typeof(PassiveNeuron), typeof(Neuron), typeof(Edge), typeof(Layer), typeof(ConvolutionLayer) });
+            var streamRead = new FileStream(filepath, FileMode.Open);
+            return (NeuralNetwork)serializer.Deserialize(streamRead);
+        }
+
+        public static void test(Network network, AbstractTestSet testSet)
         {
             if (testSet.InputLayers.Count != testSet.OutputLayers.Count)
             {
@@ -43,7 +56,7 @@ namespace HumanConnect4.Connect4
             for (int k = 0; k < testInstancesCount; k++)
             {
                 int expectedResult = getColumnFromOutputLayer(testSet.OutputLayers[k]);
-                int networkResult = getMove(testSet.InputLayers[k]);
+                int networkResult = getMove(network, testSet.InputLayers[k]);
                 if (expectedResult == networkResult)
                 {
                     positiveResultCount++;
@@ -57,13 +70,13 @@ namespace HumanConnect4.Connect4
             Console.WriteLine(String.Format("Network accuracy: {0}%", networkAccuracy));
         }
 
-        public int getMove(InputLayer inputLayer)
+        public static int getMove(Network network, InputLayer inputLayer)
         {
-            feedForward(inputLayer);
-            return getColumnFromOutputLayer(OutputLayer);
+            network.feedForward(inputLayer);
+            return getColumnFromOutputLayer(network.OutputLayer);
         }
         
-        private int getColumnFromOutputLayer(OutputLayer outputLayer)
+        private static int getColumnFromOutputLayer(OutputLayer outputLayer)
         {
             int bestMoveIndex = 0;
             for (int i = 0; i < outputLayer.Neurons.Count; i++)
@@ -77,7 +90,7 @@ namespace HumanConnect4.Connect4
             return bestMove;
         }
 
-        private InputLayer getInputLayer()
+        private static InputLayer getInputLayer()
         {
             InputLayer inputLayer = new InputLayer();
 
@@ -90,7 +103,7 @@ namespace HumanConnect4.Connect4
             return inputLayer;
         }
 
-        private ConvolutionLayer getDetectorsLayer(InputLayer inputLayer)
+        private static ConvolutionLayer getDetectorsLayer(InputLayer inputLayer)
         {
             Layer patternLayer = new Layer(NUMBER_OF_CONTEXTS * NUMBER_OF_OUTPUT_NEURONS_IN_DETECTOR * NUMBER_OF_FEATURE_DETECTORS);
             ConvolutionLayer detectorsLayer = new ConvolutionLayer(NUMBER_OF_FRAMES, patternLayer);
@@ -109,23 +122,57 @@ namespace HumanConnect4.Connect4
             return detectorsLayer;
         }
 
-        private ConvolutionLayer getSecondHiddenLayer(ConvolutionLayer detectorsLayer)
+        private static ConvolutionLayer getSecondHiddenLayer(ConvolutionLayer detectorsLayer)
         {
             Layer patternLayer = new Layer(NUMBER_OF_NEURONS_IN_SECOND_HIDDEN_LAYER);
             ConvolutionLayer secondHiddenLayer = new ConvolutionLayer(NUMBER_OF_FRAMES, patternLayer, detectorsLayer);
             return secondHiddenLayer;
         }
 
-        private OutputLayer getOutputLayer(ConvolutionLayer secondHiddenLayer)
+        public static Network getPartialMovesNetwork()
+        {
+            Network partialMovesNetwork = new Network();
+            partialMovesNetwork.InputLayer = getInputLayer();
+
+            ConvolutionLayer detectorsLayer = getDetectorsLayer(partialMovesNetwork.InputLayer);
+            partialMovesNetwork.HiddenLayers.Add(detectorsLayer);
+
+            ConvolutionLayer secondHiddenLayer = getSecondHiddenLayer(detectorsLayer);
+            partialMovesNetwork.HiddenLayers.Add(secondHiddenLayer);
+
+            partialMovesNetwork.OutputLayer = getOutputLayer(secondHiddenLayer);
+
+            return partialMovesNetwork;
+        }
+
+        private static NetworksLayer getNetworksLayer(InputLayer inputLayer)
+        {
+            Network partialMovesNetwork = getPartialMovesNetwork();
+            NetworksLayer networksLayer = new NetworksLayer(partialMovesNetwork, 4);
+            networksLayer.assignInputLayer(inputLayer);
+            return networksLayer;
+        }
+
+        private static NetworksLayer getNetworksLayer(Network[] networks, InputLayer inputLayer)
+        {
+            NetworksLayer networksLayer = new NetworksLayer(networks);
+            networksLayer.assignInputLayer(inputLayer);
+            return networksLayer;
+        }
+
+        private static OutputLayer getOutputLayer(AbstractHiddenLayer secondHiddenLayer)
         {
             OutputLayer outputLayer = new OutputLayer(NUMBER_OF_COLUMNS_TO_PLAY);
-            foreach (Layer layer in secondHiddenLayer.Layers)
-            {
-                List<AbstractNeuron> sourceNeurons = new List<AbstractNeuron>();
-                sourceNeurons.AddRange(layer.Neurons);
-                Edge.connectAllNeurons(outputLayer.Neurons, sourceNeurons);
-            }
+            Edge.connectAllNeurons(outputLayer.Neurons, secondHiddenLayer.getNeurons());
             return outputLayer;
+        }
+
+        override public void saveToXml(string filepath)
+        {
+            System.Xml.Serialization.XmlSerializer serializer = new System.Xml.Serialization.XmlSerializer(typeof(NeuralNetwork), new Type[] { typeof(Network), typeof(OutputLayer), typeof(InputLayer), typeof(PassiveNeuron), typeof(Neuron), typeof(Edge), typeof(Layer), typeof(ConvolutionLayer) });
+            var streamWrite = new FileStream(filepath, FileMode.Create);
+            serializer.Serialize(streamWrite, this);
+            streamWrite.Close();
         }
     }
 }
