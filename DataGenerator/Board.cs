@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 
 namespace DataGenerator
 {
@@ -7,7 +8,7 @@ namespace DataGenerator
         DiskColor[,] _board;
         int[] _colSize;
         int _currentPlayer;
-        public int bestMove;
+        public List<int> bestMove;
 
         // pamiętajmy, że (0,0) jest w lewym dolnym rogu...
         public int[][] FrameToDelta = new int[][] {
@@ -60,6 +61,7 @@ namespace DataGenerator
             _board = new DiskColor[7, 6];
             _colSize = new int[7];
             _currentPlayer = 1;     // always first
+            bestMove = new List<int>();
         }
 
         public void MakeMove(int col)

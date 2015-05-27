@@ -50,6 +50,7 @@ namespace DataGenerator
                     writer.Close();
 
                     data[(int)id] = p.StandardOutput.ReadToEnd();
+                    //Console.WriteLine(data[(int)id]);
                     p.WaitForExit();
                 });
                 worker[i].Start(i);

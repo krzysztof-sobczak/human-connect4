@@ -69,7 +69,7 @@ namespace DataGenerator
 
             for (int i = 0; i < data.Count; i++)
 			{
-                data[i] += "0";
+                data[i] = data[i] + "0" + Environment.NewLine;
 			}
 
             return data.ToArray();
@@ -316,12 +316,20 @@ namespace DataGenerator
             else return 0;
         }
 
-        public static void GenerateData(String path, String[] input, int threadsCount)
+        public static void GenerateData(String path, String[] input, int threadsCount, bool isTesting)
         {
             //Console.WriteLine(input);
 
             String boardsS = VelengHelper.RunVelengParallel(input, threadsCount);
-            Board[] boards = DataConverter.ParseData(boardsS);
+            Board[] boards = null;
+            if (isTesting)
+            {
+                boards = DataConverter.ParseDataForTesting(boardsS);
+            }
+            else
+            {
+                boards = DataConverter.ParseDataForLearning(boardsS);
+            }
 
             using (var stream = new StreamWriter(path))
             {
@@ -347,7 +355,21 @@ namespace DataGenerator
                                 writer.WriteField(conts[i][j].ToString(), true);
                             }
                         }
-                        writer.WriteField(gen.board.bestMove);
+                        if (gen.board.bestMove.Count == 1)
+                        {
+                            writer.WriteField(gen.board.bestMove[0]);
+                        }
+                        else
+                        {
+                            String s = "{";
+                            foreach (var item in gen.board.bestMove)
+                            {
+                                s += item.ToString() + ",";
+                            }
+                            s = s.Remove(s.Length - 1);
+                            s += "}";
+                            writer.WriteField(s);
+                        }
                         writer.NextRecord();
                     }
                 }

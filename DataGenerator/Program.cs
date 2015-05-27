@@ -10,10 +10,10 @@ namespace DataGenerator
         static void Main(string[] args)
         {
             int testNumber = 0;
-            string filename = "data__1_3";
+            string filename = "data__0_5";
             string extension = ".csv";
-            int dataSize = 3;
-            int threads = 8;
+            int dataSize = 5;
+            int threads = 64;
 
             if (args.Length >= 1)
             {
@@ -62,25 +62,25 @@ namespace DataGenerator
             String[][] inputs = DataConverter.DevideInput(input, 2);
             //// input - 1 input data for thread per line
 
-            String[] input4test = inputs[0];
-            String[] input4learn = inputs[1];
+            String[] input4learn = inputs[0];
+            String[] input4test = inputs[1];
             Thread worker4test, worker4learn;
 
             var watch = Stopwatch.StartNew();
 
-            worker4test = new Thread(() =>
-            {
-                //Thread.CurrentThread.IsBackground = true;
-                DataGenerator.GenerateData(path + filename + "_test" + extension, input4test, threads);
-            });
-            worker4test.Start();
-
             worker4learn = new Thread(() =>
             {
-                //Thread.CurrentThread.IsBackground = true;
-                DataGenerator.GenerateData(path + filename + "_learn" + extension, input4learn, threads);
+                Thread.CurrentThread.IsBackground = true;
+                DataGenerator.GenerateData(path + filename + "_learn" + extension, input4learn, threads, false);
             });
             worker4learn.Start();
+
+            worker4test = new Thread(() =>
+            {
+                Thread.CurrentThread.IsBackground = true;
+                DataGenerator.GenerateData(path + filename + "_test" + extension, input4test, threads, true);
+            });
+            worker4test.Start();
 
             worker4test.Join();
             worker4learn.Join();
