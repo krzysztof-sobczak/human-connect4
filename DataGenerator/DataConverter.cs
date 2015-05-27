@@ -38,18 +38,51 @@ namespace DataGenerator
             return board;
         }
 
-        public static Board[] ParseData(String data)
+        public static Board[] ParseDataForLearning(String data)
         {
             data = data.Replace("\r\n", "\n");
             String[] lines = data.Split(Environment.NewLine.ToCharArray());
             List<Board> situations = new List<Board>();
-            for (int i = 0; i < lines.Length/2; i++)
+            for (int i = 0; i < lines.Length / 2; i++)
             {
-                if (lines[i * 2 + 1].Length < 4)
+                if (lines[i * 2 + 1].Length == 0) continue;
+
+                if ('0' <= lines[i * 2 + 1][0] && lines[i * 2 + 1][0] <= '9')
+                {
+                    String[] outputs = lines[i * 2 + 1].Trim().Split(new char[] { ' ' });
+                    for (int j = 0; j < outputs.Length; j++)
+                    {
+                        Board b = new Board();
+                        b.MakeMoves(DataConverter.StringToMoves(lines[i * 2]));
+                        b.bestMove.Add(outputs[j][0] - '0');
+                        situations.Add(b);
+                    }
+                }
+            }
+
+            return situations.ToArray();
+        }
+
+        public static Board[] ParseDataForTesting(String data)
+        {
+            data = data.Replace("\r\n", "\n");
+            String[] lines = data.Split(Environment.NewLine.ToCharArray());
+            List<Board> situations = new List<Board>();
+            for (int i = 0; i < lines.Length / 2; i++)
+            {
+                if (lines[i * 2 + 1].Length == 0) continue;
+
+                if ('0' <= lines[i * 2 + 1][0] && lines[i * 2 + 1][0] <= '9')
                 {
                     Board b = new Board();
                     b.MakeMoves(DataConverter.StringToMoves(lines[i * 2]));
-                    b.bestMove = lines[i * 2 + 1][0] - '0';
+
+                    String[] outputs = lines[i * 2 + 1].Trim().Split(new char[] { ' ' });
+                    for (int j = 0; j < outputs.Length; j++)
+                    {
+                        b.bestMove.Add(outputs[j][0] - '0');
+                    }
+
                     situations.Add(b);
                 }
             }
