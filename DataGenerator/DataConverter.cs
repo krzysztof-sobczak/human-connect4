@@ -38,51 +38,18 @@ namespace DataGenerator
             return board;
         }
 
-        public static Board[] ParseDataForLearning(String data)
+        public static Board[] ParseData(String data)
         {
             data = data.Replace("\r\n", "\n");
             String[] lines = data.Split(Environment.NewLine.ToCharArray());
             List<Board> situations = new List<Board>();
             for (int i = 0; i < lines.Length/2; i++)
             {
-                if (lines[i * 2 + 1].Length == 0) continue;
-
-                if ('0' <= lines[i * 2 + 1][0] && lines[i * 2 + 1][0] <= '9')
-                {
-                    String[] outputs = lines[i * 2 + 1].Trim().Split(new char[] { ' ' });
-                    for (int j = 0; j < outputs.Length; j++)
-                    {
-                        Board b = new Board();
-                        b.MakeMoves(DataConverter.StringToMoves(lines[i * 2]));
-                        b.bestMove.Add(outputs[j][0] - '0');
-                        situations.Add(b);
-                    }
-                }
-            }
-
-            return situations.ToArray();
-        }
-
-        public static Board[] ParseDataForTesting(String data)
-        {
-            data = data.Replace("\r\n", "\n");
-            String[] lines = data.Split(Environment.NewLine.ToCharArray());
-            List<Board> situations = new List<Board>();
-            for (int i = 0; i < lines.Length / 2; i++)
-            {
-                if (lines[i * 2 + 1].Length == 0) continue;
-
-                if ('0' <= lines[i * 2 + 1][0] && lines[i * 2 + 1][0] <= '9')
+                if (lines[i * 2 + 1].Length < 4)
                 {
                     Board b = new Board();
                     b.MakeMoves(DataConverter.StringToMoves(lines[i * 2]));
-                    
-                    String[] outputs = lines[i * 2 + 1].Trim().Split(new char[] { ' ' });
-                    for (int j = 0; j < outputs.Length; j++)
-                    {
-                        b.bestMove.Add(outputs[j][0] - '0');
-                    }
-
+                    b.bestMove = lines[i * 2 + 1][0] - '0';
                     situations.Add(b);
                 }
             }
@@ -107,13 +74,28 @@ namespace DataGenerator
             return inputs;
         }
 
+        public static String[][] DevideInput(String[] input, float factor)
+        {
+            String[][] inputs = new String[2][];
+
+            int len = (int)((1-factor) * input.Length);
+            inputs[0] = new String[len];
+            Array.Copy(input, 0, inputs[0], 0, len);
+            inputs[1] = new String[input.Length - len];
+
+            Array.Copy(input, len, inputs[1], 0,
+                input.Length - len);
+
+            return inputs;
+        }
+
         public static String[] DoubleArrayToArraySplitsByNewLine(String[][] data)
         {
             String[] ret = new String[data.GetLength(0)];
             
             for (int i = 0; i < data.GetLength(0); i++)
             {
-                ret[i] = String.Join("", data[i]);
+                ret[i] = String.Join(Environment.NewLine, data[i]);
             }
 
             return ret;

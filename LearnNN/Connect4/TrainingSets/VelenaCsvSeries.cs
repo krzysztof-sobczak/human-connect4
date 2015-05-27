@@ -10,7 +10,7 @@ namespace HumanConnect4.Connect4.TrainingSets
 {
     public class VelenaCsvSeries : AbstractTrainingSet
     {
-        const int FILES_LIMIT = 3;
+        const int FILES_LIMIT = 999;
 
         public VelenaCsvSeries()
         {
@@ -22,7 +22,10 @@ namespace HumanConnect4.Connect4.TrainingSets
 
         private async Task getFromVelenaCsv()
         {
-            DirectoryInfo dirInfo = new DirectoryInfo(@"D:\dawid\studia\msi2\repo\LearnNN\Resources\learn");
+            String path = Path.GetDirectoryName(
+                System.Reflection.Assembly.GetExecutingAssembly().GetName().CodeBase
+            ).Substring(6);
+            DirectoryInfo dirInfo = new DirectoryInfo(path + @"\learn");
 
             FileInfo[] info = dirInfo.GetFiles("*.*");
             int counter = 0;
@@ -33,6 +36,7 @@ namespace HumanConnect4.Connect4.TrainingSets
                 {
                     break;
                 }
+                Console.WriteLine("Loading " + f.FullName + "...");
                 using (var reader = new CsvReader(new StreamReader(f.FullName)))
                 {
                     reader.Configuration.RegisterClassMap<TrainingSetCsvMap>();
