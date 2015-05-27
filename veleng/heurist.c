@@ -187,9 +187,11 @@ short her_evaluate(struct node *node)
 		return -1;
 		}
 
+	// v
     bestmove=fast_try_to_win(auxboard);
-    if(bestmove!=-1)
+    if(bestmove>-1)
         {
+		memcpy(node->movesArray, movesArray, 8 * sizeof(short));
         if(node->type==OR_TYPE)  node->value=PROVED;
         if(node->type==AND_TYPE) node->value=DISPROVED;
         }
@@ -250,8 +252,19 @@ struct node *her_select_most_proving_node(struct node *node,struct info *info)
 		if(!flag) fatal_error("Null node found!");
 		else
 			{
-			if(depth==0) info->bestmove=nodeseq[i];
-			node=node->child[nodeseq[i]];
+			// v
+			if (depth == 0) {
+				info->bestmove = nodeseq[i];
+
+				int ii = 0;
+				while (movesArray[ii] != -1 
+					&& movesArray[ii] != nodeseq[i]) ii++;
+				if (movesArray[ii] != nodeseq[i]) movesArray[ii] = nodeseq[i];
+
+				memcpy(info->movesArray, movesArray, 8 * sizeof(short));
+			}
+			node = node->child[nodeseq[i]];
+
 			}
 
 		depth++;
@@ -388,7 +401,9 @@ void her_pn_search(struct node *root,long maxnodes,struct info *info)
     short fl;
 
 	info->max_tree_depth=1;
+	// v
 	info->bestmove=her_evaluate(root);
+	memcpy(info->movesArray, root->movesArray, 8*sizeof(short));
 	her_set_proof_and_disproof_numbers(root);
 
 	while(root->proof!=0 && root->disproof!=0 && her_resources_available(maxnodes))
@@ -505,11 +520,29 @@ short heuristic_play_best(struct board *board,long maxnodenum)
 
     streeroot=fast_init_bin_tree(rootnode);
 	her_pn_search(rootnode,maxnodenum,&info);
-	mymove=info.bestmove;
+	mymove = info.bestmove;
 
-    if(rootnode->value==UNKNOWN) mymove=-1;
-    else if(rootnode->value==DISPROVED) mymove=-2;
-	else if(issymm) mymove=BOARDX-1-mymove;
+	if (rootnode->value == UNKNOWN) mymove = -1;
+	else if (rootnode->value == DISPROVED) mymove = -2;
+	else if (issymm) mymove = BOARDX - 1 - mymove;
+
+	if (mymove > -1) {
+		memcpy(movesArray, info.movesArray, 8*sizeof(short));
+		if (issymm) {
+			int len = 0;
+			while (movesArray[len] != -1) ++len;
+			int cur_len = len;
+			for (int i = 0; i < len; i++)
+			{
+				int j = 0;
+				int to_add = BOARDX - 1 - movesArray[i];
+				while (movesArray[j] != to_add
+					&& movesArray[j] != -1) ++j;
+				if (movesArray[j] != to_add)
+					movesArray[cur_len++] = to_add;
+			}
+		}
+	}
 
 	her_free_whole_tree(streeroot);
     fast_free_bin_tree(streeroot);

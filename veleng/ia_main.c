@@ -23,11 +23,13 @@
 #include "con4vals.h"
 #include "pnsearch.h"
 #include "proto.h"
+short movesArray[8];
 
 #define BLSTRSIZE 14
 
-short maxdepth;
 
+short maxdepth;
+// zahardkodowana jedna strategia
 short get_black_best_move(struct board *board)
     {
     short black_str[BLSTRSIZE]={4,4,4,4,4,2,2,2,2,6,6,6,6,6};
@@ -205,6 +207,7 @@ short groupeval(struct board *board)
 	return score;
 	}
 
+// maksymalna iloœæ dysków 
 short connected(struct board *board,short move)
 	{
 	short maxcon=1;
@@ -396,16 +399,22 @@ short endgame(struct board *board)
 	return answer;
 	}
 
+// znajdujemy sytuacje, gdzie wystarczy jeden ruch do zwyciêstwa
 short try_to_win(struct board *board)
 	{
 	short x,av[BOARDX],win=NO;
+	short moves_len = 0;
+
+	for (int i = 0; i < 8; i++) movesArray[i] = -1;
 
 	for(x=0;x<BOARDX;x++)
 		{
+		// jeœli mo¿emy tu wrzuciæ i po³¹czenie da przynajmniej 4 dyski
 		if(board->stack[x]<BOARDY && connected(board,x)>=4)
 			{
 			av[x]=YES;
 			win=YES;
+			movesArray[moves_len++] = x;
 			}
 		else av[x]=NO;
 		}
@@ -426,9 +435,17 @@ short try_to_win(struct board *board)
 short fast_try_to_win(struct board *board)
 	{
     short x,win=-1;
+	int len = 0;
 
-	for(x=0;x<BOARDX;x++)
-        if(board->stack[x]<BOARDY && connected(board,x)>=4) win=x;
+	for (int i = 0; i < 8; i++) movesArray[i] = -1;
+
+	// szansa na wiele ruchów !!!!
+	for (x = 0; x < BOARDX; x++) {
+		if (board->stack[x] < BOARDY && connected(board, x) >= 4) {
+			win = x;
+			movesArray[len++] = x;
+		}
+	}
 
     return win;
 	}
@@ -633,6 +650,8 @@ short look_ahed(struct board *board)
     if(board->turn==WHITE) cpu_level=board->white_lev;
     else cpu_level=board->black_lev;
 
+	for (int j = 0; j < 8; j++) movesArray[j] = -1;
+
 	for(x=0;x<BOARDX;x++)
 		{
 		score[x]=IMPOSSIBLE;
@@ -682,6 +701,13 @@ short look_ahed(struct board *board)
 
 	board->choices[board->filled]=y;
 
+	int moves_len = 0;
+	for (x = 0; x < BOARDX; x++)
+	{
+		if (score[x] == sc)
+			movesArray[moves_len++] = x;
+	}
+	
 	do
 		{
 		x=my_random(BOARDX);
@@ -810,8 +836,11 @@ short use_opening_book(struct board *board,short side)
     unsigned char cmparray[14];
     unsigned char tempboard[64];
     short x;
+	short moves_len = 0;
 
     if(!board->white_book) return -1;
+
+	for (int i = 0; i < 8; i++) movesArray[i] = -1;
 
     for(x=0;x<BOARDX;x++)
         {
@@ -823,7 +852,8 @@ short use_opening_book(struct board *board,short side)
             if(check_book(board,cmparray,side))
                 {
                 flags[x]=YES;
-                flagno++;
+				flagno++;
+				movesArray[moves_len++] = x;
                 }
             undomove(board,x);
             }
@@ -831,6 +861,8 @@ short use_opening_book(struct board *board,short side)
 
     if(flagno) while(1)
         {
+		// losowane rozwi¹zanie
+		// v
         x=my_random(BOARDX);
         if(flags[x]) return x;
         }
@@ -859,16 +891,20 @@ short avoid_immediate_loss(struct board *board)
 
 short ia_compute_move(struct board *board)
 	{
-	short move,x,y;
+	short move=-1000,x,y;
 
 	board->choices[board->filled]=1;
 
+	// gdy plansza pusta
+	// v
         if(board->filled==0)
 		{
 		move=3;
 		goto IA_RETURN_MOVE;
 		}
-
+	
+	// gdy jest wrzucony tylko jeden dysk
+	// v
     if(board->filled==1)
         {
         move=3;
@@ -877,6 +913,8 @@ short ia_compute_move(struct board *board)
         goto IA_RETURN_MOVE;
         }
 
+	// gdy brakuje tylko 1 dysku
+	// v
     if(board->filled==MAXMEN-1)
         {
         for(x=0;x<BOARDX;x++)
@@ -889,21 +927,31 @@ short ia_compute_move(struct board *board)
             }
         fatal_error("I shouldn't have come here...");
         }
-    
-    move=try_to_win(board);
+
+	// znajdujemy sytuacje, gdzie wystarczy jeden ruch do zwyciêstwa - WIELE WYNIKÓW
+	// v
+    move = try_to_win(board);
     if(move>=0) goto IA_RETURN_MOVE;
 
-    move=avoid_immediate_loss(board);
+	// jeœli przeciwnik ma 1 ruch do win, to block
+	// v
+    move = avoid_immediate_loss(board);
     if(move>=0) goto IA_RETURN_MOVE;
     
+	// board->black_lev==3  - u nas zawsze prawda
+	// zahardkodowana 1 strategia
+	// v
     if(board->turn==BLACK && board->black_lev==3)
         {
         move=get_black_best_move(board);
         if(move>=0) goto IA_RETURN_MOVE;
         }
 
+	// wrzucony tylko 1 dysk, chyba 3-cia kolumna (lub 4)
     else if(board->filled==1 && board->stack[3]==1)
         {
+
+		// never done
         if(board->autotest)
             {
             short sel;
@@ -919,11 +967,15 @@ short ia_compute_move(struct board *board)
             else if(sel<=14) move=5;
             else move=6;
             }
+
+		// always
         else move=3;
 
         goto IA_RETURN_MOVE;
         }
 
+	// WIELE WYNIKÓW
+	// v
     /* Let's look in the opening book */
     switch(board->turn)
         {
@@ -945,6 +997,7 @@ short ia_compute_move(struct board *board)
     if(move>=0) goto IA_RETURN_MOVE;
 
     fight(NO);
+	// v
     move=heuristic_play_best(board,2800L);
 
     // Here we handle the fact that Black could also look for a win
@@ -955,6 +1008,7 @@ short ia_compute_move(struct board *board)
         short temp;
 
         fight(YES);
+		// v
         temp=heuristic_play_best(board,2800L);
         fight(NO);
 
@@ -963,6 +1017,7 @@ short ia_compute_move(struct board *board)
 
     if(move>=0) goto IA_RETURN_MOVE;
 
+	// v
     move=look_ahed(board);
 
 	IA_RETURN_MOVE:

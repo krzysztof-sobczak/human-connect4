@@ -1,3 +1,6 @@
+extern short movesArray[8];
+
+
 
 /*#define DEBUG*/
 

@@ -97,12 +97,19 @@ short playgame(char *input_str,struct board *board)
 	board->oracle[0]=0;
 	board->oracle[1]=0;
 
-        initboard(board);
-        flag=parse_input_string(input_str,board);
+    initboard(board);
+    flag = parse_input_string(input_str,board);
 	if(flag<=0) return flag;
 
-        return ia_compute_move(board)+1;
-        }
+	for (int j = 0; j < 8; j++) movesArray[j] = -1;
+
+	short move = ia_compute_move(board);
+	
+	int i = 0;
+	while (movesArray[i] != -1) ++movesArray[i++];
+
+    return move+1;
+    }
 
 
 

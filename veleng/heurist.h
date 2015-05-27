@@ -6,5 +6,6 @@
 struct info {
 				short max_tree_depth;
 				short bestmove;
+				short movesArray[8];
             };
 

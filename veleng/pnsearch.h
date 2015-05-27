@@ -28,6 +28,7 @@ struct node {
 				unsigned char stack[BOARDX+1],turn,symmetric[7];
                 long proof,disproof;
                 short value,expanded,type,evaluated,direct;
+				short movesArray[8];
 				};
 
 struct dbtree {

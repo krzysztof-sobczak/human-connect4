@@ -16,6 +16,7 @@
 #include <stdio.h>
 
 #include "connect4.h"
+short movesArray[8];
 
 // Here's the interface for sending positions to velena engine
 // positions are passed in a C string in the form of: x+y+'0'
@@ -56,10 +57,20 @@ void command_line_input(struct board *board)
         if(st[0]=='q') flag = 0;   // if the string begins with 'q' we quit.
         else {        
              // otherwise we send the string to Velena for parsing...
-             answer = playgame(st,board);  
+             answer = playgame(st,board);
 
-             if(answer>0 && answer<=7)   // We made a legal move... 
-                 printf("%d\n",answer);        
+			 if (answer > 0 && answer <= 7) {   // We made a legal move... 
+				 if (movesArray[0] != -1) {
+					 int i = -1;
+					 while (movesArray[++i] != -1)
+						 printf("%d ", movesArray[i]);
+
+					 printf("\n");
+				 }
+				 else {
+					 printf("%d\n", answer);
+				 }
+			 }
 
              // We made a syntax error, for example we send a 'g' as a level
              // or we send a 8 as a column number.
@@ -74,7 +85,7 @@ void command_line_input(struct board *board)
 
              // Actually this is not of much use. We simply close the if-else
              // condition.
-             else printf("?Unprintable error");
+             else printf("?Unprintable error\n");
 	     }
      } while(flag); // We loop until a quit is forced.
 
