@@ -25,16 +25,23 @@ namespace HumanConnect4.Connect4
 
         public AI()
         {
+
+
+            // ------------------------------
+            // OLD APPROACH - 4 + 1 NETWORKS
+            // ------------------------------
+
+
             // Create network for moves 1-6
             // load from xml
             // NeuralNetwork.fromXml("network1.xml");
-            Network network1 = NeuralNetwork.getPartialMovesNetwork();
-            // train network
-            HumanConnect4.Connect4.TrainingSets.AbstractTrainingSet trainingSet1 = TrainingSetFactory.Create<TrainingSets.VelenaCsvSeries>();
-            network1.train(trainingSet1);
-            // test network
-            HumanConnect4.Connect4.TestSets.AbstractTestSet testSet1 = TestSetFactory.Create<TestSets.VelenaCsvSeries>();
-            NeuralNetwork.test(network1, testSet1);
+            //Network network1 = NeuralNetwork.getPartialMovesNetwork();
+            //// train network
+            //HumanConnect4.Connect4.TrainingSets.AbstractTrainingSet trainingSet1 = TrainingSetFactory.Create<TrainingSets.VelenaCsvSeries>();
+            //network1.train(trainingSet1);
+            //// test network
+            //HumanConnect4.Connect4.TestSets.AbstractTestSet testSet1 = TestSetFactory.Create<TestSets.VelenaCsvSeries>();
+            //NeuralNetwork.test(network1, testSet1);
             // serialize
             //network1.saveToXml("network1.xml");
 
@@ -84,12 +91,32 @@ namespace HumanConnect4.Connect4
             //NeuralNetwork = new NeuralNetwork(network1, network2, network3, network4);
             //// test network
             //HumanConnect4.Connect4.TrainingSets.AbstractTrainingSet trainingSet = TrainingSetFactory.Create<TrainingSets.VelenaCsvSeries>();
-            //NeuralNetwork.train(trainingSet4);
+            //NeuralNetwork.train(trainingSet);
 
             //HumanConnect4.Connect4.TestSets.AbstractTestSet testSet = TestSetFactory.Create<TestSets.VelenaCsvSeries>();
             //NeuralNetwork.test(NeuralNetwork, testSet);
             //// serialize
             ////network1.saveToXml("network.xml");
+            
+
+            // ------------------------------
+            // CURRENT APPROACH - ONE NETWORK
+            // ------------------------------
+
+
+            // Create neural network
+            // load from xml
+            //NeuralNetwork = NeuralNetwork.getNeuralNetworkfromXml("neuralnetwork.xml");
+            NeuralNetwork = new NeuralNetwork(NeuralNetwork.getPartialMovesNetwork());
+            // train network
+            HumanConnect4.Connect4.TrainingSets.AbstractTrainingSet trainingSet = TrainingSetFactory.Create<TrainingSets.VelenaCsvSeries>();
+            NeuralNetwork.train(trainingSet);
+            // test network
+            HumanConnect4.Connect4.TestSets.AbstractTestSet testSet = TestSetFactory.Create<TestSets.VelenaCsvSeries>();
+            NeuralNetwork.test(NeuralNetwork, testSet);
+            
+            // serialize
+            //NeuralNetwork.saveNeuralNetworkToXml("neuralnetwork.xml");
         }
 
     }
