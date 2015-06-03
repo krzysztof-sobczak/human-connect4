@@ -51,9 +51,9 @@ namespace HumanConnect4.Connect4
             return (NeuralNetwork)serializer.Deserialize(streamRead);
         }
 
-        public static float test(Network network, AbstractTestSet testSet)
+        public static float test(Network network, HumanConnect4.Connect4.TestSets.AbstractTestSet testSet)
         {
-            if (testSet.InputLayers.Count != testSet.OutputLayers.Count)
+            if (testSet.InputLayers.Count != testSet.expectedColumns.Count)
             {
                 throw new Exception("Training set must contain the same number of elements inputLayers and expectedOutputLayers .");
             }
@@ -62,15 +62,15 @@ namespace HumanConnect4.Connect4
             int testInstancesCount = testSet.InputLayers.Count;
             for (int k = 0; k < testInstancesCount; k++)
             {
-                int expectedResult = getColumnFromOutputLayer(testSet.OutputLayers[k]);
+                List<int> expectedResults = testSet.expectedColumns[k];
                 int networkResult = getMove(network, testSet.InputLayers[k]);
-                if (expectedResult == networkResult)
+                if (expectedResults.Contains(networkResult))
                 {
                     positiveResultCount++;
                 } else {
                     negativeResultCount++;
                 }
-                Debug.WriteLine(String.Format("[Test {0}] Expected result: {1}, Network result: {2}", k, expectedResult, networkResult));
+                //Debug.WriteLine(String.Format("[Test {0}] Expected result: {1}, Network result: {2}", k, expectedResult, networkResult));
             }
             var networkAccuracy = Math.Round((positiveResultCount / (positiveResultCount + negativeResultCount)) * 100, 2);
             Debug.WriteLine(String.Format("Network accuracy: {0}%", networkAccuracy));

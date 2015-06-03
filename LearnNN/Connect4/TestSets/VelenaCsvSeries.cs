@@ -17,6 +17,7 @@ namespace HumanConnect4.Connect4.TestSets
         {
             InputLayers = new List<InputLayer>();
             OutputLayers = new List<OutputLayer>();
+            expectedColumns = new List<List<int>>();
 
             AsyncHelpers.RunSync(() => getFromVelenaCsv());
         }
@@ -40,12 +41,12 @@ namespace HumanConnect4.Connect4.TestSets
                 Console.WriteLine("Loading " + f.FullName + "...");
                 using (var reader = new CsvReader(new StreamReader(f.FullName)))
                 {
-                    reader.Configuration.RegisterClassMap<TrainingSetCsvMap>();
+                    reader.Configuration.RegisterClassMap<TestSetCsvMap>();
                     while (reader.Read())
                     {
-                        TrainingSetCsv instance = reader.GetRecord<TrainingSetCsv>();
+                        TestSetCsv instance = reader.GetRecord<TestSetCsv>();
                         InputLayers.Add(instance.getInputLayer());
-                        OutputLayers.Add(columnNumberToOutputLayer(instance.BestColumn));
+                        expectedColumns.Add(instance.BestColumns);
                     }
                 }
             }

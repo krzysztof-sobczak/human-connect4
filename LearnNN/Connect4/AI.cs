@@ -23,7 +23,7 @@ namespace HumanConnect4.Connect4
             set { neuralNetwork = value; }
         }
 
-        public AI()
+        public AI(float learningRate, float moment, int iter)
         {
 
 
@@ -103,7 +103,7 @@ namespace HumanConnect4.Connect4
             // CURRENT APPROACH - ONE NETWORK
             // ------------------------------
 
-            
+            /*
             //// Create neural network
             //// load from xml
             Console.WriteLine("Loading data...");
@@ -115,14 +115,28 @@ namespace HumanConnect4.Connect4
             NeuralNetwork.train(trainingSet);
             //// test network
             HumanConnect4.Connect4.TestSets.AbstractTestSet testSet = TestSetFactory.Create<TestSets.VelenaCsvSeries>();
-            NeuralNetwork.test(NeuralNetwork, testSet);
+            Console.WriteLine("Testing...");
+            float acc = NeuralNetwork.test(NeuralNetwork, testSet);
 
             //// serialize
             Console.WriteLine("Serializing NN...");
-            NeuralNetwork.saveNeuralNetworkToXml("neuralnetwork.xml");
+            NeuralNetwork.saveNeuralNetworkToXml("neuralnetwork_" + acc.ToString() + ".xml");
+            */
             
+            NeuralNetwork = new NeuralNetwork(NeuralNetwork.getPartialMovesNetwork());
+            NeuralNetwork.TRAIN_ITERATIONS = iter;
+            NeuralNetwork.LEARNING_RATE = learningRate;
+            NeuralNetwork.MOMENTUM = moment;
+            HumanConnect4.Connect4.TrainingSets.AbstractTrainingSet trainingSet = TrainingSetFactory.Create<TrainingSets.VelenaCsvSeries>();
+            Console.WriteLine("Start training...");
+            NeuralNetwork.train(trainingSet);
+            HumanConnect4.Connect4.TestSets.AbstractTestSet testSet = TestSetFactory.Create<TestSets.VelenaCsvSeries>();
+            float acc = NeuralNetwork.test(NeuralNetwork, testSet);
 
-            /* 
+            //// serialize
+            Console.WriteLine("Serializing NN...");
+            NeuralNetwork.saveNeuralNetworkToXml("neuralnetwork_" + acc.ToString() + ".xml");
+            /*
             //// demo = load & test
             NeuralNetwork = NeuralNetwork.getNeuralNetworkfromXml("neuralnetwork.xml");
             HumanConnect4.Connect4.TestSets.AbstractTestSet testSet = TestSetFactory.Create<TestSets.VelenaCsvSeries>();

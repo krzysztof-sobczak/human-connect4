@@ -53,6 +53,8 @@
     </Compile>
     <Compile Include="Connect4\TestSetFactory.cs" />
     <Compile Include="Connect4\TestSets\AbstractTestSet.cs" />
+    <Compile Include="Connect4\TestSets\TestSetCsvMap.cs" />
+    <Compile Include="Connect4\TestSets\TestSetCsv.cs" />
     <Compile Include="Connect4\TestSets\VelenaCsv.cs" />
     <Compile Include="Connect4\TestSets\VelenaCsvSeries.cs" />
     <Compile Include="Connect4\TrainingSetFactory.cs" />
