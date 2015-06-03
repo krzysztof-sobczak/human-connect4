@@ -59,7 +59,7 @@ namespace DataGenerator
 
             // input - 1 data per line
             input = DataConverter.Shuffle(input);
-            String[][] inputs = DataConverter.DevideInput(input, 2);
+            String[][] inputs = DataConverter.DevideInput(input, 0.333F);
             //// input - 1 input data for thread per line
 
             String[] input4learn = inputs[0];

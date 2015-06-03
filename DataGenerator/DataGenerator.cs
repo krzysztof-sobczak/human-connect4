@@ -97,7 +97,7 @@ namespace DataGenerator
                 {
                     move += (rand.Next(7) + 1).ToString();
                 }
-                input[++len] = move + '0' + Environment.NewLine;
+                input[len++] = move + '0' + Environment.NewLine;
             }
             
             return input;

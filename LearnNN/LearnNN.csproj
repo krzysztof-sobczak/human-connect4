@@ -47,9 +47,14 @@
     <Compile Include="AsyncHelpers.cs" />
     <Compile Include="Connect4\AI.cs" />
     <Compile Include="Connect4\ExtendedContext.cs" />
-    <Compile Include="Connect4\NeuralNetwork.cs" />
+    <Compile Include="Connect4\NeuralNetwork.cs">
+      <SubType>
+      </SubType>
+    </Compile>
     <Compile Include="Connect4\TestSetFactory.cs" />
     <Compile Include="Connect4\TestSets\AbstractTestSet.cs" />
+    <Compile Include="Connect4\TestSets\TestSetCsvMap.cs" />
+    <Compile Include="Connect4\TestSets\TestSetCsv.cs" />
     <Compile Include="Connect4\TestSets\VelenaCsv.cs" />
     <Compile Include="Connect4\TestSets\VelenaCsvSeries.cs" />
     <Compile Include="Connect4\TrainingSetFactory.cs" />
@@ -67,6 +72,7 @@
     <Compile Include="NeuralNetwork\Layers\ConvolutionLayer.cs" />
     <Compile Include="NeuralNetwork\Layers\InputLayer.cs" />
     <Compile Include="NeuralNetwork\Layers\Layer.cs" />
+    <Compile Include="NeuralNetwork\Layers\NetworksLayer.cs" />
     <Compile Include="NeuralNetwork\Layers\OutputLayer.cs" />
     <Compile Include="NeuralNetwork\Network.cs" />
     <Compile Include="NeuralNetwork\Neurons\AbstractNeuron.cs" />

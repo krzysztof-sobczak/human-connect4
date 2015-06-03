@@ -11,6 +11,8 @@ namespace HumanConnect4.Connect4.TestSets
         protected const int NUMBER_OF_FRAMES = NeuralNetwork.NUMBER_OF_FRAMES;
         protected const int NUMBER_OF_COLUMNS_TO_PLAY = NeuralNetwork.NUMBER_OF_COLUMNS_TO_PLAY;
 
+        public List<List<int>> expectedColumns;
+
         protected OutputLayer columnNumberToOutputLayer(int columnNumber)
         {
             List<float> outputValues = new List<float>();

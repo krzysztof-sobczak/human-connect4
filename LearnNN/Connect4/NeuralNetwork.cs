@@ -28,6 +28,13 @@ namespace HumanConnect4.Connect4
             this.OutputLayer = getOutputLayer(networksLayer);
         }
 
+        public NeuralNetwork(Network network)
+        {
+            this.InputLayer = network.InputLayer;
+            this.HiddenLayers = network.HiddenLayers;
+            this.OutputLayer = network.OutputLayer;
+        }
+
         public NeuralNetwork(Network networkFrom1To6, Network networkFrom7To12, Network networkFrom13To18, Network networkFrom19To24)
         {
             this.InputLayer = getInputLayer();
@@ -37,16 +44,16 @@ namespace HumanConnect4.Connect4
             this.OutputLayer = getOutputLayer(networksLayer);
         }
 
-        public static NeuralNetwork fromXml(string filepath)
+        public static NeuralNetwork getNeuralNetworkfromXml(string filepath)
         {
             System.Xml.Serialization.XmlSerializer serializer = new System.Xml.Serialization.XmlSerializer(typeof(NeuralNetwork), new Type[] { typeof(Network), typeof(OutputLayer), typeof(InputLayer), typeof(PassiveNeuron), typeof(Neuron), typeof(Edge), typeof(Layer), typeof(ConvolutionLayer) });
             var streamRead = new FileStream(filepath, FileMode.Open);
             return (NeuralNetwork)serializer.Deserialize(streamRead);
         }
 
-        public static void test(Network network, AbstractTestSet testSet)
+        public static float test(Network network, HumanConnect4.Connect4.TestSets.AbstractTestSet testSet)
         {
-            if (testSet.InputLayers.Count != testSet.OutputLayers.Count)
+            if (testSet.InputLayers.Count != testSet.expectedColumns.Count)
             {
                 throw new Exception("Training set must contain the same number of elements inputLayers and expectedOutputLayers .");
             }
@@ -55,19 +62,21 @@ namespace HumanConnect4.Connect4
             int testInstancesCount = testSet.InputLayers.Count;
             for (int k = 0; k < testInstancesCount; k++)
             {
-                int expectedResult = getColumnFromOutputLayer(testSet.OutputLayers[k]);
+                List<int> expectedResults = testSet.expectedColumns[k];
                 int networkResult = getMove(network, testSet.InputLayers[k]);
-                if (expectedResult == networkResult)
+                if (expectedResults.Contains(networkResult))
                 {
                     positiveResultCount++;
                 } else {
                     negativeResultCount++;
                 }
-                Debug.WriteLine(String.Format("[Test {0}] Expected result: {1}, Network result: {2}", k, expectedResult, networkResult));
+                //Debug.WriteLine(String.Format("[Test {0}] Expected result: {1}, Network result: {2}", k, expectedResult, networkResult));
             }
             var networkAccuracy = Math.Round((positiveResultCount / (positiveResultCount + negativeResultCount)) * 100, 2);
             Debug.WriteLine(String.Format("Network accuracy: {0}%", networkAccuracy));
             Console.WriteLine(String.Format("Network accuracy: {0}%", networkAccuracy));
+
+            return (float)networkAccuracy;
         }
 
         public static int getMove(Network network, InputLayer inputLayer)
@@ -167,7 +176,7 @@ namespace HumanConnect4.Connect4
             return outputLayer;
         }
 
-        override public void saveToXml(string filepath)
+        public void saveNeuralNetworkToXml(string filepath)
         {
             System.Xml.Serialization.XmlSerializer serializer = new System.Xml.Serialization.XmlSerializer(typeof(NeuralNetwork), new Type[] { typeof(Network), typeof(OutputLayer), typeof(InputLayer), typeof(PassiveNeuron), typeof(Neuron), typeof(Edge), typeof(Layer), typeof(ConvolutionLayer) });
             var streamWrite = new FileStream(filepath, FileMode.Create);
