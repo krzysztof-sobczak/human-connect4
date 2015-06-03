@@ -45,7 +45,7 @@ namespace HumanConnect4.NeuralNetwork.Neurons
                 output += edge.Input.Output * edge.Weight;
             }
             this.Output = ActivationFunction.sigmoid(output);
-            //System.Diagnostics.Debug.WriteLine(String.Format("Calculated output: {0}", this.Output));
+            //System.Diagnostics.Console.WriteLine(String.Format("Calculated output: {0}", this.Output));
         }
     }
 }

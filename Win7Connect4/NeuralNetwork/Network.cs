@@ -12,9 +12,9 @@ namespace HumanConnect4.NeuralNetwork
 {
     public class Network
     {
-        private const float LEARNING_RATE = 3;
-        private const float MOMENTUM = 1;
-        private const int TRAIN_ITERATIONS = 50;
+        public float LEARNING_RATE = 3;
+        public float MOMENTUM = 1;
+        public int TRAIN_ITERATIONS = 50;
 
         private InputLayer inputLayer;
 
@@ -78,7 +78,7 @@ namespace HumanConnect4.NeuralNetwork
                 }
                 float globalError = errorSum / trainInstancesCount;
                 GlobalError.Add(globalError);
-                Debug.WriteLine(String.Format("GlobalError: {0}", globalError));
+                Console.WriteLine(String.Format("GlobalError: {0}", globalError));
             }
         }
 
