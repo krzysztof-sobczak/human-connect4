@@ -6,7 +6,7 @@ namespace HumanConnect4
 {
     class Random
     {
-        private const int RANDOM_SEED = 100;
+        private static int RANDOM_SEED = 100;
         private static System.Random Rand = new System.Random(RANDOM_SEED);
 
         public static float PositiveFloat(float range = 0.1f)
@@ -16,6 +16,11 @@ namespace HumanConnect4
         public static float BipolarFloat(float range = 0.1f)
         {
             return ((float)Rand.NextDouble() * (range * 2) - range);
+        }
+
+        public static void setSeed(int seed)
+        {
+            RANDOM_SEED = seed;
         }
     }
 }

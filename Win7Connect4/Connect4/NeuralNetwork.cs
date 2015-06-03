@@ -70,10 +70,10 @@ namespace HumanConnect4.Connect4
                 } else {
                     negativeResultCount++;
                 }
-                Debug.WriteLine(String.Format("[Test {0}] Expected result: {1}, Network result: {2}", k, expectedResult, networkResult));
+                Console.WriteLine(String.Format("[Test {0}] Expected result: {1}, Network result: {2}", k, expectedResult, networkResult));
             }
             var networkAccuracy = Math.Round((positiveResultCount / (positiveResultCount + negativeResultCount)) * 100, 2);
-            Debug.WriteLine(String.Format("Network accuracy: {0}%", networkAccuracy));
+            Console.WriteLine(String.Format("Network accuracy: {0}%", networkAccuracy));
         }
 
         public static int getMove(Network network, InputLayer inputLayer)

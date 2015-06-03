@@ -11,19 +11,19 @@ namespace HumanConnect4.Connect4.TrainingSets
     public class VelenaCsv : AbstractTrainingSet
     {
 
-        private const string velenaCsvPath = "velena_learn.csv";
+        private const string velenaCsvPath = @"\Resources\velena_learn.csv";
 
-        public VelenaCsv()
+        public VelenaCsv(string _velenaCsvPath = velenaCsvPath)
         {
             InputLayers = new List<InputLayer>();
             OutputLayers = new List<OutputLayer>();
 
-            AsyncHelpers.RunSync(() => getFromVelenaCsv());
+            AsyncHelpers.RunSync(() => getFromVelenaCsv(_velenaCsvPath));
         }
 
-        private async Task getFromVelenaCsv()
+        private async Task getFromVelenaCsv(string _velenaCsvPath)
         {
-            using (var reader = new CsvReader(new StreamReader(@"\Resources\" + velenaCsvPath)))
+            using (var reader = new CsvReader(new StreamReader(_velenaCsvPath)))
             {
                 reader.Configuration.RegisterClassMap<TrainingSetCsvMap>();
                 while (reader.Read())
